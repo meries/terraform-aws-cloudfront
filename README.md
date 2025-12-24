@@ -247,4 +247,4 @@ MIT
 
 ---
 
-Made with ❤️ by [Meries](https://github.com/meries)
+Made with 🖤 by [Meries](https://github.com/meries)

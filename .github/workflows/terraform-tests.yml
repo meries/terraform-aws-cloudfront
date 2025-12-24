@@ -46,9 +46,9 @@ jobs:
           echo "## Terraform Test Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ "${{ steps.test.outcome }}" == "success" ]; then
-            echo "✅ All tests passed successfully!" >> $GITHUB_STEP_SUMMARY
+            echo "✔️ All tests passed successfully!" >> $GITHUB_STEP_SUMMARY
           else
-            echo "❌ Some tests failed. Check the logs above for details." >> $GITHUB_STEP_SUMMARY
+            echo "✖️ Some tests failed. Check the logs above for details." >> $GITHUB_STEP_SUMMARY
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Validation Steps:" >> $GITHUB_STEP_SUMMARY
@@ -71,7 +71,7 @@ jobs:
             | Validate | ${{ steps.validate.outcome }} |
             | Tests | ${{ steps.test.outcome }} |
 
-            ${{ steps.test.outcome == 'success' && '✅ All tests passed!' || '❌ Tests failed - see workflow logs' }}
+            ${{ steps.test.outcome == 'success' && '✔️ All tests passed!' || '✖️ Tests failed - see workflow logs' }}
 
             *Workflow: \`${{ github.workflow }}\`*
             *Branch: \`${{ github.head_ref }}\`*`;
