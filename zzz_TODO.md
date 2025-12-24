@@ -1,77 +1,35 @@
 # TODO - CloudFront Terraform Module
 
-## High Priority
+## 🔥 Top Priorities
+### Security & Compliance
+- [ ] Trusted Key Groups for signed URLs/cookies
+- [ ] Field-Level Encryption support
 
-### Security
-- [x] WAF Integration (web_acl_id parameter)
-- [x] Response Headers Policies
-- [x] Origin Request Policies
-- [ ] Trusted Key Groups for signed URLs
-
-### Distribution Features
+### Core Features
 - [ ] Origin Groups (automatic failover)
-- [x] Origin Shield
-- [ ] Continuous Deployment (blue/green)
-- [ ] Custom Error Pages (enhancement)
+- [ ] Continuous Deployment (blue/green deployments)
+- [ ] Lambda@Edge module integration (separate module)
 
-### Monitoring
-- [ ] Enhanced CloudWatch metrics (cache hit/miss, latency)
-- [ ] Real-time Logs (Kinesis streams)
-- [ ] Improved dashboards
-
-## Medium Priority
-
-### Infrastructure
-- [ ] Origin Access Identity (legacy support)
-- [ ] Cache Invalidation automation
-- [ ] Field-Level Encryption
-
-### Testing & Validation
-- [x] Terraform tests (`terraform test`)
-- [x] YAML schema validation
-- [ ] Full LocalStack support
-- [ ] Pre-commit hooks (fmt, validate, tfsec)
-
-### Developer Experience
-- [ ] JSON Schema for YAML (IDE autocomplete)
-- [ ] Enhanced outputs (log buckets, etc.)
-- [ ] More examples (WAF, Lambda@Edge, SPA, e-commerce)
-- [ ] Variables validation
+### Monitoring & Observability
+- [ ] Enhanced CloudWatch metrics (cache hit/miss ratios, latency p50/p95/p99)
+- [ ] Real-time Logs to Kinesis Data Streams
+- [ ] Improved CloudWatch dashboards with key metrics
 
 ### Documentation
-- [ ] Architecture diagrams
-- [ ] Migration guides (CloudFormation, Terraform legacy)
+- [ ] Architecture diagrams (mermaid or draw.io)
 - [ ] Cost optimization guide
-- [ ] Troubleshooting guide
+- [ ] Troubleshooting guide with common issues
 
-## Low Priority
+## 📋 Secondary Priorities
 
-### CI/CD
-- [x] GitHub Actions workflows
-- [ ] GitLab CI templates
-- [ ] Terraform Cloud examples
+### Infrastructure Automation
+- [ ] Cache invalidation automation (on deployment)
+- [ ] Import script (convert existing distributions to YAML)
 
-### Multi-Account
-- [ ] Cross-account IAM automation
-- [ ] AWS Organizations integration
+### Testing
+- [ ] Full LocalStack integration for local testing
 
-### Nice to Have
-- [ ] Import script (existing distributions to YAML)
-- [ ] CLI tool (validation, generation)
-- [ ] VS Code extension
-- [ ] CloudFront KeyValueStore support
-
-## Quick Wins
-
-- [ ] Tags management (mandatory tags, cost allocation)
-- [ ] Naming validation
-- [ ] Default values documentation
-- [ ] README (TOC, badges, FAQ)
-- [ ] Configurable lifecycle rules (log buckets)
-
-## Bugs & Improvements
-
-- [ ] Clearer error messages
-- [ ] Input validation before apply
-- [ ] Performance (reduce data sources)
-- [ ] State management
+## 💡 Nice to Have
+- [ ] CLI tool for YAML validation and generation
+- [ ] Migration guides (from CloudFormation or other Terraform modules)
+- [ ] Cross-account IAM automation for multi-account setups
