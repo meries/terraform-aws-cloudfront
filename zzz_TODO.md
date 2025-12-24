@@ -1,6 +1,7 @@
 # TODO - CloudFront Terraform Module
 
 ## 🔥 Top Priorities
+
 ### Security & Compliance
 - [ ] Trusted Key Groups for signed URLs/cookies
 - [ ] Field-Level Encryption support
