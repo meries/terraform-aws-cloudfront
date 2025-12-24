@@ -1,0 +1,53 @@
+# Origin Request Policies for controlling what gets forwarded to the origin
+
+# Forward all headers, cookies, and query strings to origin
+all-viewer:
+  comment: "Forward all viewer headers, cookies, and query strings to origin"
+  cookies_behavior: all
+  headers_behavior: allViewer
+  query_strings_behavior: all
+
+# CORS policy for S3 origins
+cors-s3:
+  comment: "CORS headers for S3 origin"
+  cookies_behavior: none
+  headers_behavior: whitelist
+  headers:
+    - Origin
+    - Access-Control-Request-Method
+    - Access-Control-Request-Headers
+
+  query_strings_behavior: none
+
+# API policy with authentication
+api-auth:
+  comment: "Forward authentication headers and query parameters to API"
+  cookies_behavior: whitelist
+  cookies:
+    - session_id
+    - auth_token
+  headers_behavior: whitelist
+  headers:
+    - Authorization
+    - Accept
+    - Content-Type
+    - User-Agent
+    - Referer
+  query_strings_behavior: all
+
+# Custom policy for specific use case
+custom-forward:
+  comment: "Selective forwarding for custom origin"
+  cookies_behavior: whitelist
+  cookies:
+    - user_preferences
+  headers_behavior: whitelist
+  headers:
+    - CloudFront-Viewer-Country
+    - CloudFront-Is-Mobile-Viewer
+    - Accept-Language
+  query_strings_behavior: whitelist
+  query_strings:
+    - version
+    - locale
+    - device

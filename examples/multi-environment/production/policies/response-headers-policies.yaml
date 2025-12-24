@@ -1,0 +1,62 @@
+security-headers-strict:
+  comment: "Strict security headers for production environment"
+
+  security_headers:
+    strict_transport_security:
+      max_age_seconds: 63072000  # 2 years
+      include_subdomains: true
+      preload: true
+
+    content_security_policy:
+      policy: "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.example.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+      override: true
+
+    x_content_type_options:
+      override: true
+
+    x_frame_options:
+      frame_option: DENY
+      override: true
+
+    x_xss_protection:
+      mode_block: true
+      protection: true
+      override: true
+
+    referrer_policy:
+      referrer_policy: strict-origin-when-cross-origin
+      override: true
+
+  custom_headers:
+    - header: X-Application-Version
+      value: "1.0.0"
+      override: false
+
+    - header: Permissions-Policy
+      value: "geolocation=(), microphone=(), camera=()"
+      override: false
+
+cors-headers:
+  comment: "CORS headers for static assets"
+
+  cors_config:
+    access_control_allow_credentials: false
+
+    access_control_allow_headers:
+      items:
+        - "*"
+
+    access_control_allow_methods:
+      items:
+        - GET
+        - HEAD
+        - OPTIONS
+
+    access_control_allow_origins:
+      items:
+        - "https://www.example.com"
+        - "https://example.com"
+
+    access_control_max_age_seconds: 600
+
+    origin_override: true

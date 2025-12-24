@@ -1,0 +1,16 @@
+enabled: true
+comment: "Custom Origin - Test Case 14"
+create_dns_records: false
+
+origins:
+  - id: custom-origin
+    domain_name: api.example.com
+    type: custom
+    protocol_policy: "https-only"
+    https_port: 443
+
+default_behavior:
+  target_origin_id: custom-origin
+  viewer_protocol_policy: "redirect-to-https"
+  allowed_methods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+  cached_methods: [GET, HEAD]

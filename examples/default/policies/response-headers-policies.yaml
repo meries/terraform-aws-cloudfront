@@ -1,0 +1,132 @@
+# Response Headers Policies for adding security and CORS headers to responses
+
+# Complete security headers policy
+security-headers:
+  comment: "Comprehensive security headers for enhanced protection"
+  security_headers:
+    # Strict Transport Security (HSTS)
+    strict_transport_security:
+      max_age_sec: 31536000
+      include_subdomains: true
+      preload: true
+      override: true
+
+    # Content Security Policy
+    content_security_policy:
+      value: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'"
+      override: true
+
+    # X-Content-Type-Options
+    content_type_options: true
+    content_type_options_override: true
+
+    # X-Frame-Options
+    frame_options:
+      value: "DENY"
+      override: true
+
+    # Referrer Policy
+    referrer_policy:
+      value: "strict-origin-when-cross-origin"
+      override: true
+
+    # XSS Protection
+    xss_protection:
+      enabled: true
+      mode_block: true
+      override: true
+
+# CORS policy for API endpoints
+cors-api:
+  comment: "CORS headers for API access"
+  cors_config:
+    allow_credentials: true
+    allow_headers:
+      - "Authorization"
+      - "Content-Type"
+      - "X-Api-Key"
+      - "X-Requested-With"
+    allow_methods:
+      - "GET"
+      - "POST"
+      - "PUT"
+      - "DELETE"
+      - "OPTIONS"
+    allow_origins:
+      - "https://example.com"
+      - "https://app.example.com"
+    expose_headers:
+      - "X-Request-Id"
+      - "X-RateLimit-Limit"
+      - "X-RateLimit-Remaining"
+    max_age_sec: 3600
+    origin_override: true
+
+# CORS policy for public assets
+cors-public:
+  comment: "CORS headers for public static assets"
+  cors_config:
+    allow_credentials: false
+    allow_headers:
+      - "*"
+    allow_methods:
+      - "GET"
+      - "HEAD"
+      - "OPTIONS"
+    allow_origins:
+      - "*"
+    max_age_sec: 86400
+    origin_override: true
+
+# Custom headers policy
+custom-headers:
+  comment: "Custom application headers"
+  custom_headers:
+    - header: "X-Application-Version"
+      value: "1.0.0"
+      override: true
+    - header: "X-Powered-By"
+      value: "CloudFront"
+      override: true
+    - header: "Cache-Control"
+      value: "public, max-age=31536000, immutable"
+      override: false
+
+# Combined policy with security headers and CORS
+security-cors-combined:
+  comment: "Security headers with CORS for SPAs"
+  security_headers:
+    strict_transport_security:
+      max_age_sec: 63072000
+      include_subdomains: true
+      preload: true
+      override: true
+    content_security_policy:
+      value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'"
+      override: true
+    frame_options:
+      value: "SAMEORIGIN"
+      override: true
+    referrer_policy:
+      value: "no-referrer-when-downgrade"
+      override: true
+  cors_config:
+    allow_credentials: true
+    allow_headers:
+      - "Authorization"
+      - "Content-Type"
+    allow_methods:
+      - "GET"
+      - "POST"
+      - "OPTIONS"
+    allow_origins:
+      - "https://app.example.com"
+    max_age_sec: 600
+    origin_override: true
+
+# Server timing headers for performance monitoring
+server-timing:
+  comment: "Server timing headers for performance analysis"
+  server_timing_headers:
+    enabled: true
+    sampling_rate: 50

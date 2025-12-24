@@ -1,0 +1,23 @@
+security-headers:
+  comment: "Security headers for staging environment"
+
+  security_headers:
+    strict_transport_security:
+      max_age_seconds: 31536000
+      include_subdomains: true
+      preload: false
+
+    content_security_policy:
+      policy: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;"
+      override: false
+
+    x_content_type_options:
+      override: false
+
+    x_frame_options:
+      frame_option: DENY
+      override: false
+
+    referrer_policy:
+      referrer_policy: strict-origin-when-cross-origin
+      override: false

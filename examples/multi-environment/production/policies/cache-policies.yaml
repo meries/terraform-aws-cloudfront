@@ -1,0 +1,59 @@
+website-cache:
+  comment: "Optimized caching for production website"
+  default_ttl: 86400      # 1 day
+  max_ttl: 31536000       # 1 year
+  min_ttl: 1
+
+  enable_accept_encoding_gzip: true
+  enable_accept_encoding_brotli: true
+
+  cookies_behavior: none
+  headers_behavior: none
+  query_strings_behavior: none
+
+api-cache:
+  comment: "API caching for production with short TTL"
+  default_ttl: 300        # 5 minutes
+  max_ttl: 3600           # 1 hour
+  min_ttl: 0
+
+  enable_accept_encoding_gzip: true
+  enable_accept_encoding_brotli: true
+
+  cookies_behavior: none
+  headers_behavior: whitelist
+  headers:
+    - Authorization
+    - Accept
+    - Accept-Language
+    - CloudFront-Viewer-Country
+  query_strings_behavior: all
+
+static-assets-cache:
+  comment: "Aggressive caching for static assets (CSS, JS)"
+  default_ttl: 604800     # 7 days
+  max_ttl: 31536000       # 1 year
+  min_ttl: 3600           # 1 hour
+
+  enable_accept_encoding_gzip: true
+  enable_accept_encoding_brotli: true
+
+  cookies_behavior: none
+  headers_behavior: none
+  query_strings_behavior: whitelist
+  query_strings:
+    - v
+    - version
+
+images-cache:
+  comment: "Long-term caching for images"
+  default_ttl: 2592000    # 30 days
+  max_ttl: 31536000       # 1 year
+  min_ttl: 86400          # 1 day
+
+  enable_accept_encoding_gzip: false   # Images are already compressed
+  enable_accept_encoding_brotli: false
+
+  cookies_behavior: none
+  headers_behavior: none
+  query_strings_behavior: none

@@ -1,0 +1,84 @@
+name: Terraform Tests
+
+on:
+  push:
+    branches:
+      - main
+      - '**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  terraform-tests:
+    name: Run Terraform Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.12"
+
+      - name: Terraform Format Check
+        id: fmt
+        run: terraform fmt -check -recursive
+        continue-on-error: true
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
+
+      - name: Run Terraform Tests
+        id: test
+        run: terraform test
+
+      - name: Test Summary
+        if: always()
+        run: |
+          echo "## Terraform Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.test.outcome }}" == "success" ]; then
+            echo "✅ All tests passed successfully!" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Some tests failed. Check the logs above for details." >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Validation Steps:" >> $GITHUB_STEP_SUMMARY
+          echo "- Format Check: ${{ steps.fmt.outcome }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Init: ${{ steps.init.outcome }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Validate: ${{ steps.validate.outcome }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Tests: ${{ steps.test.outcome }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: Comment PR
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const output = `#### Terraform Test Results
+
+            | Step | Status |
+            |------|--------|
+            | Format Check | ${{ steps.fmt.outcome }} |
+            | Init | ${{ steps.init.outcome }} |
+            | Validate | ${{ steps.validate.outcome }} |
+            | Tests | ${{ steps.test.outcome }} |
+
+            ${{ steps.test.outcome == 'success' && '✅ All tests passed!' || '❌ Tests failed - see workflow logs' }}
+
+            *Workflow: \`${{ github.workflow }}\`*
+            *Branch: \`${{ github.head_ref }}\`*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            });

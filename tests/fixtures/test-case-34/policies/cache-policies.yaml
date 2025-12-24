@@ -1,0 +1,9 @@
+header-policy:
+  comment: "Header policy test"
+  default_ttl: 3600
+  cookies_behavior: none
+  headers_behavior: whitelist
+  headers:
+    - Authorization
+    - CloudFront-Viewer-Country
+  query_strings_behavior: none

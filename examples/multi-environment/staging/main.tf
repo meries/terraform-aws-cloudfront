@@ -1,0 +1,69 @@
+terraform {
+  required_version = ">= 1.12"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 6.27"
+    }
+  }
+}
+
+provider "aws" {
+  region = "eu-west-1"
+}
+
+provider "aws" {
+  alias  = "us_east_1"
+  region = "us-east-1"
+}
+
+module "cloudfront" {
+  source = "../../.."
+
+  providers = {
+    aws.us_east_1 = aws.us_east_1
+  }
+
+  # Staging paths
+  distributions_path = "${path.module}/distributions"
+  policies_path      = "${path.module}/policies"
+  functions_path     = "${path.module}/functions"
+
+  # Staging naming
+  naming_prefix = "staging"
+  naming_suffix = ""
+
+  # Staging settings (more features than dev, less than prod)
+  create_route53_records = true  # Auto DNS in staging
+  create_log_buckets     = false # Use existing bucket or no logs
+  enable_monitoring      = false # No monitoring in staging
+
+  # Staging tags
+  common_tags = {
+    Environment = "staging"
+    ManagedBy   = "Terraform"
+    Team        = "Platform"
+    Project     = "CloudFront-Example"
+  }
+
+  # Optional: Route53 zone mapping if auto-creating records
+  route53_zones = {
+    "staging.example.com" = "example.com"
+  }
+}
+
+output "distribution_ids" {
+  description = "CloudFront distribution IDs"
+  value       = module.cloudfront.distribution_ids
+}
+
+output "distribution_domain_names" {
+  description = "CloudFront distribution domain names"
+  value       = module.cloudfront.distribution_domain_names
+}
+
+output "cache_policy_ids" {
+  description = "Custom cache policy IDs"
+  value       = module.cloudfront.cache_policy_ids
+}

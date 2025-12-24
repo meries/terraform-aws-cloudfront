@@ -1,0 +1,4 @@
+test-function-50:
+  comment: "Runtime test function"
+  runtime: "cloudfront-js-1.0"
+  code_file: "src/runtime-test.js"

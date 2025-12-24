@@ -1,0 +1,26 @@
+enabled: true
+comment: "Viewer Protocol Policy - Test Case 26"
+create_dns_records: false
+
+origins:
+  - id: s3-origin
+    domain_name: static.s3.amazonaws.com
+    type: s3
+
+default_behavior:
+  target_origin_id: s3-origin
+  viewer_protocol_policy: "redirect-to-https"
+  allowed_methods: [GET, HEAD]
+  cached_methods: [GET, HEAD]
+
+behaviors:
+  - path_pattern: "/public/*"
+    target_origin_id: s3-origin
+    viewer_protocol_policy: "allow-all"
+    allowed_methods: [GET, HEAD]
+    cached_methods: [GET, HEAD]
+  - path_pattern: "/secure/*"
+    target_origin_id: s3-origin
+    viewer_protocol_policy: "https-only"
+    allowed_methods: [GET, HEAD]
+    cached_methods: [GET, HEAD]

@@ -1,0 +1,20 @@
+api-origin-request:
+  comment: "Origin request policy for API calls"
+
+  cookies_behavior: all
+
+  headers_behavior: whitelist
+  headers:
+    - Authorization
+    - Accept
+    - Accept-Language
+    - Accept-Encoding
+    - Content-Type
+    - CloudFront-Viewer-Country
+    - CloudFront-Is-Desktop-Viewer
+    - CloudFront-Is-Mobile-Viewer
+    - CloudFront-Is-Tablet-Viewer
+    - User-Agent
+    - Referer
+
+  query_strings_behavior: all

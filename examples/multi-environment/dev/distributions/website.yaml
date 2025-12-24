@@ -1,0 +1,35 @@
+enabled: true
+comment: "Development Website Distribution"
+price_class: "PriceClass_100"
+default_root_object: "index.html"
+ipv6_enabled: false
+create_dns_records: false # Manual DNS in dev
+
+aliases:
+  - dev.example.com
+
+certificate:
+  acm_certificate_arn: "arn:aws:acm:us-east-1:123456789012:certificate/dev-cert-id"
+
+origins:
+  - id: dev-s3-origin
+    domain_name: dev-website-bucket.s3.eu-west-1.amazonaws.com
+    type: s3
+
+default_behavior:
+  target_origin_id: dev-s3-origin
+  viewer_protocol_policy: redirect-to-https
+
+  # Use AWS Managed CachingDisabled policy for dev (no caching)
+  cache_policy_id: "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
+
+  # CloudFront Functions
+  function_associations:
+    - event_type: viewer-request
+      function_name: url-rewrite
+
+# No additional behaviors in dev for simplicity
+# No logging in dev
+# No monitoring in dev
+# No WAF in dev
+enable_additional_metrics: false

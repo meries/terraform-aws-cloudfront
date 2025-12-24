@@ -1,0 +1,15 @@
+enabled: true
+comment: "AWS Managed Policy - Test Case 31"
+create_dns_records: false
+
+origins:
+  - id: s3-origin
+    domain_name: static.s3.amazonaws.com
+    type: s3
+
+default_behavior:
+  target_origin_id: s3-origin
+  viewer_protocol_policy: "redirect-to-https"
+  cache_policy_id: "658327ea-f89d-4fab-a63d-7e88639e58f6"
+  allowed_methods: [GET, HEAD]
+  cached_methods: [GET, HEAD]

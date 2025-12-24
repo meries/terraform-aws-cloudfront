@@ -1,0 +1,35 @@
+# Example Key Value Stores configuration
+# CloudFront Key Value Stores provide low-latency key-value storage for CloudFront Functions
+
+# URL redirects mapping
+redirects:
+  comment: "URL redirect mappings for legacy URLs"
+  items:
+    - key: "/old-page"
+      value: "/new-page"
+    - key: "/legacy-product"
+      value: "/products/featured"
+    - key: "/about-us-old"
+      value: "/about"
+
+# Feature flags
+feature-flags:
+  comment: "Feature toggle configuration"
+  items:
+    - key: "enable_new_ui"
+      value: "true"
+    - key: "beta_features"
+      value: "false"
+    - key: "maintenance_mode"
+      value: "false"
+
+# API configuration
+api-config:
+  comment: "API configuration values"
+  items:
+    - key: "api_version"
+      value: "v2"
+    - key: "rate_limit"
+      value: "1000"
+    - key: "timeout_ms"
+      value: "5000"

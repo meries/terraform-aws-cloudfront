@@ -1,0 +1,6 @@
+query-policy:
+  comment: "Query string policy"
+  default_ttl: 3600
+  cookies_behavior: none
+  headers_behavior: none
+  query_strings_behavior: all

@@ -1,0 +1,14 @@
+enabled: true
+comment: "Validation Test - Test Case 91"
+create_dns_records: false
+
+origins:
+  - id: s3-origin
+    domain_name: static.s3.amazonaws.com
+    type: s3
+
+default_behavior:
+  target_origin_id: s3-origin
+  viewer_protocol_policy: "redirect-to-https"
+  allowed_methods: [GET, HEAD]
+  cached_methods: [GET, HEAD]

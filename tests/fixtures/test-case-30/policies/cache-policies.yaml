@@ -1,0 +1,8 @@
+custom-cache:
+  comment: "Custom cache policy for test 30"
+  default_ttl: 3600
+  max_ttl: 86400
+  min_ttl: 0
+  cookies_behavior: none
+  headers_behavior: none
+  query_strings_behavior: none

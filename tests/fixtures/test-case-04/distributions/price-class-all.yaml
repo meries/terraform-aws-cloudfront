@@ -1,0 +1,22 @@
+enabled: true
+comment: "Test PriceClass_All"
+price_class: "PriceClass_All"
+default_root_object: "index.html"
+ipv6_enabled: false
+create_dns_records: false
+
+origins:
+  - id: s3-origin
+    domain_name: test-bucket.s3.amazonaws.com
+    type: s3
+
+default_behavior:
+  target_origin_id: s3-origin
+  viewer_protocol_policy: "redirect-to-https"
+  allowed_methods:
+    - GET
+    - HEAD
+  cached_methods:
+    - GET
+    - HEAD
+  compress: true

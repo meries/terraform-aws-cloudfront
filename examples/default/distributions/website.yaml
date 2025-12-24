@@ -1,0 +1,64 @@
+enabled: true
+comment: "Website"
+price_class: "PriceClass_100"
+default_root_object: "index.html"
+ipv6_enabled: true
+
+aliases:
+  - www.example.com
+
+# DNS record creation control
+# Set to false if the Route53 zone is in a different AWS account
+# or if you want to manage DNS records manually
+# Default: true (records will be created if route53_zones is configured)
+create_dns_records: false
+
+certificate:
+  acm_certificate_arn: "arn:aws:acm:us-east-1:123:certificate/xxx"
+
+origins:
+  - id: s3-website
+    domain_name: bucket.s3.eu-west-1.amazonaws.com
+    type: s3
+
+# Behavior sorting mode: 'auto' (automatic sorting) or 'manual' (keep YAML order)
+# Default: auto
+behavior_sorting: auto
+
+# Default behavior applies to all requests that don't match ordered behaviors
+default_behavior:
+  target_origin_id: s3-website
+  cache_policy_name: "website-cache"
+  response_headers_policy_name: "security-headers"
+
+# Ordered behaviors - specific path patterns with custom caching rules
+# These take precedence over default_behavior for matching requests
+behaviors:
+  # API endpoints - minimal caching, forward auth headers
+  - path_pattern: "/api/*"
+    target_origin_id: s3-website
+    cache_policy_name: "api-cache"
+    viewer_protocol_policy: https-only
+    allowed_methods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+
+  # Static assets - aggressive caching
+  - path_pattern: "/assets/*"
+    target_origin_id: s3-website
+    cache_policy_name: "website-cache"
+    response_headers_policy_name: "cors-public"
+    viewer_protocol_policy: redirect-to-https
+    compress: true
+
+custom_error_responses:
+  - error_code: 404
+    response_code: 200
+    response_page_path: "/index.html"
+
+# CloudFront access logs configuration
+logging:
+  bucket: "my-cloudfront-logs.s3.amazonaws.com"
+  prefix: "cloudfront/website/"
+  include_cookies: false
+
+# Enable additional CloudWatch metrics for detailed monitoring
+enable_additional_metrics: true

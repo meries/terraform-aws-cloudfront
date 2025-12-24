@@ -1,0 +1,30 @@
+# CloudFront Functions configuration
+
+# URL rewrite function
+url-rewrite:
+  comment: "Rewrite URLs for SPA routing"
+  runtime: "cloudfront-js-2.0"
+  publish: true
+  src_file: "src/url-rewrite.js"
+
+# Add security headers
+add-headers:
+  comment: "Add custom security headers to responses"
+  runtime: "cloudfront-js-2.0"
+  publish: true
+  src_file: "src/add-headers.js"
+
+# Redirect HTTP to HTTPS
+redirect-https:
+  comment: "Redirect HTTP requests to HTTPS"
+  runtime: "cloudfront-js-2.0"
+  publish: true
+  src_file: "src/redirect-https.js"
+
+# KVS-based URL redirects (Example of Key Value Store integration)
+kvs-redirect:
+  comment: "Dynamic URL redirects using Key Value Store"
+  runtime: "cloudfront-js-2.0"
+  publish: true
+  code_file: "src/kvs-redirect.js"
+  key_value_store_name: "redirects"  # Links to KVS defined in key-value-stores.yaml

@@ -1,0 +1,53 @@
+enabled: true
+comment: "Staging Website Distribution"
+price_class: "PriceClass_100"
+default_root_object: "index.html"
+ipv6_enabled: false
+
+aliases:
+  - staging.example.com
+
+certificate:
+  acm_certificate_arn: "arn:aws:acm:us-east-1:123456789012:certificate/staging-cert-id"
+
+origins:
+  - id: staging-s3-origin
+    domain_name: staging-website-bucket.s3.eu-west-1.amazonaws.com
+    type: s3
+
+  - id: staging-api-origin
+    domain_name: api.staging.example.com
+    type: custom
+    custom_origin_config:
+      http_port: 80
+      https_port: 443
+      origin_protocol_policy: https-only
+      origin_ssl_protocols: [TLSv1.2]
+
+default_behavior:
+  target_origin_id: staging-s3-origin
+  viewer_protocol_policy: redirect-to-https
+  cache_policy_name: "website-cache"
+  response_headers_policy_name: "security-headers"
+
+  function_associations:
+    - event_type: viewer-request
+      function_name: url-rewrite
+
+# Ordered cache behaviors with different caching strategies
+behaviors:
+  - path_pattern: "/api/*"
+    target_origin_id: staging-api-origin
+    viewer_protocol_policy: https-only
+    cache_policy_name: "api-cache"
+    allowed_methods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+
+  - path_pattern: "/static/*"
+    target_origin_id: staging-s3-origin
+    viewer_protocol_policy: redirect-to-https
+    # Use AWS Managed CachingOptimized for static assets
+    cache_policy_id: "658327ea-f89d-4fab-a63d-7e88639e58f6"
+
+# No logs in staging to save costs
+# No WAF in staging
+enable_additional_metrics: false
