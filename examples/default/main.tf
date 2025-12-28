@@ -19,14 +19,17 @@ provider "aws" {
 }
 
 module "cloudfront" {
-  source  = "meries/cloudfront/aws"
-  version = "~> 1.0"
+  source = "../../"
 
-  # Required: Path to your YAML configurations
-  distributions_path    = "./distributions"
-  policies_path         = "./policies"
-  functions_path        = "./functions"
-  key_value_stores_path = "./key-value-stores"
+  providers = {
+    aws.us_east_1 = aws.us_east_1
+  }
+
+  # Default: Path to your YAML configurations (can be overridden if needed)
+  # distributions_path    = "${path.module}/distributions"
+  # policies_path         = "${path.module}/policies"
+  # functions_path        = "${path.module}/functions"
+  # key_value_stores_path = "${path.module}/key-value-stores"
 
   # Optional: Resource naming
   naming_prefix = ""

@@ -25,10 +25,11 @@ module "cloudfront" {
     aws.us_east_1 = aws.us_east_1
   }
 
-  # Production paths
-  distributions_path = "${path.module}/distributions"
-  policies_path      = "${path.module}/policies"
-  functions_path     = "${path.module}/functions"
+  # Default: Path to your YAML configurations (can be overridden if needed)
+  # distributions_path    = "${path.module}/distributions"
+  # policies_path         = "${path.module}/policies"
+  # functions_path        = "${path.module}/functions"
+  # key_value_stores_path = "${path.module}/key-value-stores"
 
   # Production naming
   naming_prefix = "prod"
