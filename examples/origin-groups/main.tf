@@ -19,7 +19,8 @@ provider "aws" {
 }
 
 module "cloudfront" {
-  source = "../../"
+  source  = "meries/cloudfront/aws"
+  version = "1.0.1"
 
   providers = {
     aws.us_east_1 = aws.us_east_1
