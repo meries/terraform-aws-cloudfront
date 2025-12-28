@@ -1,13 +1,14 @@
 name: Terraform Tests
 
 on:
-  push:
-    branches:
-      - main
-      - '**'
   pull_request:
     branches:
       - main
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
 
 jobs:
   terraform-tests:
@@ -58,8 +59,9 @@ jobs:
           echo "- Tests: ${{ steps.test.outcome }}" >> $GITHUB_STEP_SUMMARY
 
       - name: Comment PR
-        if: github.event_name == 'pull_request' && always()
+        if: always()
         uses: actions/github-script@v7
+        continue-on-error: true
         with:
           script: |
             const output = `#### Terraform Test Results
@@ -76,7 +78,7 @@ jobs:
             *Workflow: \`${{ github.workflow }}\`*
             *Branch: \`${{ github.head_ref }}\`*`;
 
-            github.rest.issues.createComment({
+            await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
