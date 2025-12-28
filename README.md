@@ -284,3 +284,66 @@ MIT
 ---
 
 Made with 🖤 by [Meries](https://github.com/meries)
+
+<!-- BEGIN_TF_DOCS -->
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_cloudfront_cache_policy.policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_cache_policy) | resource |
+| [aws_cloudfront_distribution.dist](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution) | resource |
+| [aws_cloudfront_function.function](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_function) | resource |
+| [aws_cloudfront_key_value_store.kvs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_key_value_store) | resource |
+| [aws_cloudfront_monitoring_subscription.metrics](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_monitoring_subscription) | resource |
+| [aws_cloudfront_origin_access_control.oac](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_origin_access_control) | resource |
+| [aws_cloudfront_origin_request_policy.policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_origin_request_policy) | resource |
+| [aws_cloudfront_response_headers_policy.policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_response_headers_policy) | resource |
+| [aws_cloudfrontkeyvaluestore_key.items](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfrontkeyvaluestore_key) | resource |
+| [aws_cloudwatch_dashboard.cloudfront](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_dashboard) | resource |
+| [aws_cloudwatch_metric_alarm.error_rate_4xx](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.error_rate_5xx](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_route53_record.cloudfront_ipv4](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_route53_record.cloudfront_ipv6](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_s3_bucket.cloudfront_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
+| [aws_s3_bucket_lifecycle_configuration.cloudfront_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration) | resource |
+| [aws_s3_bucket_ownership_controls.cloudfront_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_ownership_controls) | resource |
+| [aws_s3_bucket_policy.cloudfront_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
+| [aws_s3_bucket_public_access_block.cloudfront_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
+| [aws_s3_bucket_server_side_encryption_configuration.cloudfront_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
+| [aws_s3_bucket_versioning.cloudfront_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
+| [aws_route53_zone.zones](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Map of tags to apply to all resources created by this module. Example: { Environment = 'production', ManagedBy = 'terraform' } | `map(string)` | `{}` | no |
+| <a name="input_create_log_buckets"></a> [create\_log\_buckets](#input\_create\_log\_buckets) | Automatically create and configure S3 buckets for CloudFront access logs with appropriate policies, lifecycle rules, and encryption | `bool` | `false` | no |
+| <a name="input_create_route53_records"></a> [create\_route53\_records](#input\_create\_route53\_records) | Automatically create Route53 DNS alias records (A and AAAA) pointing to CloudFront distributions for configured alternate domain names | `bool` | `false` | no |
+| <a name="input_distributions_path"></a> [distributions\_path](#input\_distributions\_path) | Path to the directory containing CloudFront distribution YAML configuration files. Each YAML file defines a distribution with origins, behaviors, and cache policies | `string` | `"./distributions"` | no |
+| <a name="input_enable_default_tags"></a> [enable\_default\_tags](#input\_enable\_default\_tags) | Enable automatic addition of default tags (ManagedBy='terraform', ModuleVersion) to all resources, merged with common\_tags | `bool` | `true` | no |
+| <a name="input_enable_monitoring"></a> [enable\_monitoring](#input\_enable\_monitoring) | Enable CloudWatch monitoring with alarms for error rates (4xx, 5xx) and optional dashboards for CloudFront distribution metrics | `bool` | `false` | no |
+| <a name="input_functions_path"></a> [functions\_path](#input\_functions\_path) | Path to the directory containing CloudFront Functions JavaScript files. Each .js file represents a function that runs at edge locations | `string` | `"./functions"` | no |
+| <a name="input_key_value_stores_path"></a> [key\_value\_stores\_path](#input\_key\_value\_stores\_path) | Path to the directory containing CloudFront KeyValueStore YAML files for low-latency data storage accessible from CloudFront Functions | `string` | `"./key-value-stores"` | no |
+| <a name="input_module_version"></a> [module\_version](#input\_module\_version) | Version identifier for this module instance, added as a tag to all resources when enable\_default\_tags is true. Example: '1.0.0' | `string` | `""` | no |
+| <a name="input_monitoring_config"></a> [monitoring\_config](#input\_monitoring\_config) | CloudWatch monitoring configuration with error\_rate\_threshold (%), error\_rate\_evaluation\_periods, sns\_topic\_arn for notifications, and create\_dashboard flag | <pre>object({<br>    error_rate_threshold          = optional(number, 5)<br>    error_rate_evaluation_periods = optional(number, 2)<br>    sns_topic_arn                 = optional(string)<br>    create_dashboard              = optional(bool, false)<br>  })</pre> | `{}` | no |
+| <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Prefix string to prepend to all resource names. Useful for environment segregation (e.g., 'prod-', 'staging-') or multi-tenant deployments | `string` | `""` | no |
+| <a name="input_naming_suffix"></a> [naming\_suffix](#input\_naming\_suffix) | Suffix string to append to all resource names. Useful for regional identification (e.g., '-us-east-1') or versioning (e.g., '-v2') | `string` | `""` | no |
+| <a name="input_policies_path"></a> [policies\_path](#input\_policies\_path) | Path to the directory containing CloudFront policy YAML files (cache policies, origin request policies, response headers policies) | `string` | `"./policies"` | no |
+| <a name="input_route53_zones"></a> [route53\_zones](#input\_route53\_zones) | Map of domain names to Route53 hosted zone IDs for DNS record creation. Example: { 'example.com' = 'Z1234567890ABC' } | `map(string)` | `{}` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_cache_policy_ids"></a> [cache\_policy\_ids](#output\_cache\_policy\_ids) | Map of cache policy IDs |
+| <a name="output_cloudfront_function_arns"></a> [cloudfront\_function\_arns](#output\_cloudfront\_function\_arns) | Map of CloudFront Function ARNs |
+| <a name="output_cloudfront_function_etags"></a> [cloudfront\_function\_etags](#output\_cloudfront\_function\_etags) | Map of CloudFront Function ETags |
+| <a name="output_distribution_arns"></a> [distribution\_arns](#output\_distribution\_arns) | Map of distribution ARNs |
+| <a name="output_distribution_domain_names"></a> [distribution\_domain\_names](#output\_distribution\_domain\_names) | Map of CloudFront domain names |
+| <a name="output_distribution_hosted_zone_ids"></a> [distribution\_hosted\_zone\_ids](#output\_distribution\_hosted\_zone\_ids) | Map of CloudFront hosted zone IDs |
+| <a name="output_distribution_ids"></a> [distribution\_ids](#output\_distribution\_ids) | Map of distribution IDs |
+| <a name="output_key_value_store_arns"></a> [key\_value\_store\_arns](#output\_key\_value\_store\_arns) | Map of Key Value Store names to ARNs |
+| <a name="output_key_value_store_ids"></a> [key\_value\_store\_ids](#output\_key\_value\_store\_ids) | Map of Key Value Store names to IDs |
+| <a name="output_oac_ids"></a> [oac\_ids](#output\_oac\_ids) | Map of Origin Access Control IDs |
+<!-- END_TF_DOCS -->
