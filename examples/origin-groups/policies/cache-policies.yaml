@@ -1,0 +1,3 @@
+# Minimal cache policies for origin groups example
+# This example uses AWS managed policy "CachingOptimized" referenced in the distribution
+# No custom policies needed for basic failover demonstration
