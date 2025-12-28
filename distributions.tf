@@ -54,6 +54,26 @@ resource "aws_cloudfront_distribution" "dist" {
     }
   }
 
+  # Origin Groups (for automatic failover)
+  dynamic "origin_group" {
+    for_each = try(each.value.origin_groups, [])
+    content {
+      origin_id = origin_group.value.id
+
+      failover_criteria {
+        status_codes = origin_group.value.failover_criteria.status_codes
+      }
+
+      member {
+        origin_id = origin_group.value.members[0].origin_id
+      }
+
+      member {
+        origin_id = origin_group.value.members[1].origin_id
+      }
+    }
+  }
+
   # Default cache behavior
   default_cache_behavior {
     target_origin_id       = each.value.default_behavior.target_origin_id
