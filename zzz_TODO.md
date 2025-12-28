@@ -2,12 +2,7 @@
 
 ## 🔥 Top Priorities
 
-### Security & Compliance
-- [ ] Trusted Key Groups for signed URLs/cookies
-- [ ] Field-Level Encryption support
-
 ### Core Features
-- [ ] Origin Groups (automatic failover)
 - [ ] Continuous Deployment (blue/green deployments)
 - [ ] Lambda@Edge module integration (separate module)
 

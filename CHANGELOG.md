@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2025-12-28
+
+### Added
+- **Origin Groups support** for automatic failover between primary and secondary origins
+  - Configure failover based on HTTP status codes (403, 404, 500, 502, 503, 504)
+  - Support for S3-to-S3 and custom origin failover
+  - Multiple origin groups per distribution
+  - Complete documentation in `docs/ORIGIN_GROUPS.md`
+  - Example configuration in `examples/origin-groups/`
+  - 8 new test cases covering all validations
+
+### Fixed
+- **Lambda@Edge associations** were documented but not implemented in code
+  - Added missing `lambda_function_association` dynamic blocks to distributions.tf
+  - Now supports viewer-request, viewer-response, origin-request, and origin-response events
+  - Updated `docs/LAMBDA_EDGE.md` with correct YAML syntax
+
+### Changed
+- **Module variables now have default values** for better developer experience
+  - `distributions_path` defaults to `"./distributions"`
+  - `policies_path` defaults to `"./policies"`
+  - `functions_path` defaults to `"./functions"`
+  - `key_value_stores_path` defaults to `"./key-value-stores"`
+  - All paths can still be overridden when calling the module
+  - Examples simplified (no need to specify paths if using standard structure)
+
+### Improved
+- Enhanced validation for behaviors to support both origin IDs and origin group IDs
+- Examples now include `providers` block for correct `us-east-1` alias configuration
+- Cleaner example structure without unnecessary empty directories
+
 ## [1.0.0] - 2025-12-24
 
 ### Added
@@ -58,4 +89,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Multiple certificate configurations
 - IPv6 support toggle
 
+[1.0.1]: https://github.com/meries/terraform-aws-cloudfront/releases/tag/v1.0.1
 [1.0.0]: https://github.com/meries/terraform-aws-cloudfront/releases/tag/v1.0.0
