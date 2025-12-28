@@ -98,27 +98,25 @@ check "origin_required_fields" {
   }
 }
 
-# Validation: Behaviors reference valid origins
-check "behavior_origin_references" {
+# Validation: Behaviors and default behavior must reference valid origins OR origin groups
+check "behavior_target_references" {
   assert {
     condition = alltrue(flatten([
       for dist_name, dist_config in local.distributions : [
-        for behavior in try(dist_config.behaviors, []) :
-        contains([for o in dist_config.origins : o.id], behavior.target_origin_id)
+        for behavior in concat(
+          [dist_config.default_behavior],
+          try(dist_config.behaviors, [])
+        ) :
+        contains(
+          concat(
+            [for o in dist_config.origins : o.id],
+            [for g in try(dist_config.origin_groups, []) : g.id]
+          ),
+          behavior.target_origin_id
+        )
       ]
     ]))
-    error_message = "All behaviors must reference existing origin IDs. Check target_origin_id in your behaviors."
-  }
-}
-
-# Validation: Default behavior references valid origin
-check "default_behavior_origin_reference" {
-  assert {
-    condition = alltrue([
-      for dist_name, dist_config in local.distributions :
-      contains([for o in dist_config.origins : o.id], dist_config.default_behavior.target_origin_id)
-    ])
-    error_message = "default_behavior.target_origin_id must reference an existing origin ID"
+    error_message = "Behavior target_origin_id must reference an existing origin ID or origin group ID"
   }
 }
 
@@ -769,5 +767,65 @@ check "logging_include_cookies" {
       can(tobool(dist_config.logging.include_cookies))
     ])
     error_message = "'logging.include_cookies' must be a boolean value"
+  }
+}
+
+# ========================================
+# Origin Groups Validations
+# ========================================
+
+# Validation: Origin group must have exactly 2 members
+check "origin_group_member_count" {
+  assert {
+    condition = alltrue(flatten([
+      for dist_name, dist_config in local.distributions : [
+        for group in try(dist_config.origin_groups, []) :
+        length(group.members) == 2
+      ]
+    ]))
+    error_message = "Origin groups must have exactly 2 members (primary and secondary)"
+  }
+}
+
+# Validation: Origin group members must reference existing origins
+check "origin_group_member_references" {
+  assert {
+    condition = alltrue(flatten([
+      for dist_name, dist_config in local.distributions : [
+        for group in try(dist_config.origin_groups, []) : [
+          for member in group.members :
+          contains([for o in dist_config.origins : o.id], member.origin_id)
+        ]
+      ]
+    ]))
+    error_message = "Origin group members must reference existing origin IDs defined in the distribution"
+  }
+}
+
+# Validation: Origin group IDs must be unique within distribution
+check "origin_group_unique_ids" {
+  assert {
+    condition = alltrue([
+      for dist_name, dist_config in local.distributions :
+      length(try(dist_config.origin_groups, [])) == length(distinct([
+        for group in try(dist_config.origin_groups, []) : group.id
+      ]))
+    ])
+    error_message = "Origin group IDs must be unique within each distribution"
+  }
+}
+
+# Validation: Failover status codes must be valid
+check "origin_group_status_codes" {
+  assert {
+    condition = alltrue(flatten([
+      for dist_name, dist_config in local.distributions : [
+        for group in try(dist_config.origin_groups, []) : [
+          for code in group.failover_criteria.status_codes :
+          contains([403, 404, 500, 502, 503, 504], code)
+        ]
+      ]
+    ]))
+    error_message = "Valid failover status codes: 403, 404, 500, 502, 503, 504"
   }
 }

@@ -10,7 +10,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "eu-west-1"
+  region = "us-east-1"
 }
 
 provider "aws" {
@@ -32,18 +32,13 @@ module "cloudfront" {
   # key_value_stores_path = "${path.module}/key-value-stores"
 
   # Optional: Resource naming
-  naming_prefix = ""
-  naming_suffix = ""
-
-  # Optional: Automation features
-  create_route53_records = false
-  create_log_buckets     = false
-  enable_monitoring      = false
+  naming_prefix = "ha-"
 
   # Optional: Tags
   common_tags = {
     Environment = "production"
     ManagedBy   = "Terraform"
+    Example     = "origin-groups-failover"
   }
 }
 

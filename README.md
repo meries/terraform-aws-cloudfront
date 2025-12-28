@@ -168,6 +168,41 @@ Key configuration options for `distributions/*.yaml`:
 - Origin Shield
 - Access logs to S3
 
+## Origin Groups (Automatic Failover)
+
+CloudFront Origin Groups provide automatic failover between primary and secondary origins when specific HTTP error codes are returned. This enables high-availability configurations without external monitoring.
+
+### Basic YAML Configuration
+
+```yaml
+origins:
+  - id: primary-s3
+    domain_name: primary-bucket.s3.us-east-1.amazonaws.com
+    type: s3
+  - id: secondary-s3
+    domain_name: backup-bucket.s3.us-west-2.amazonaws.com
+    type: s3
+
+origin_groups:
+  - id: ha-s3-group
+    failover_criteria:
+      status_codes: [500, 502, 503, 504]
+    members:
+      - origin_id: primary-s3
+      - origin_id: secondary-s3
+
+default_behavior:
+  target_origin_id: ha-s3-group
+```
+
+### Key Points
+
+- **Exactly 2 members required** - Primary and secondary origins only
+- **Valid status codes** - 403, 404, 500, 502, 503, 504
+- **Automatic failover** - Happens in < 1 second when primary returns configured status code
+- **Behaviors can reference origin groups** - Use `target_origin_id` to reference either an origin or origin group
+
+See [docs/ORIGIN_GROUPS.md](docs/ORIGIN_GROUPS.md) for complete documentation including multi-region examples, best practices, and troubleshooting.
 
 ## CloudFront Functions vs Lambda@Edge
 
@@ -237,6 +272,7 @@ See [docs/AWS_MANAGED_POLICIES.md](docs/AWS_MANAGED_POLICIES.md) for complete li
 
 - [docs/BEHAVIORS.md](docs/BEHAVIORS.md) - Cache behaviors automatic sorting
 - [docs/LAMBDA_EDGE.md](docs/LAMBDA_EDGE.md) - CloudFront Functions vs Lambda@Edge
+- [docs/ORIGIN_GROUPS.md](docs/ORIGIN_GROUPS.md) - Origin Groups for automatic failover
 - [docs/AWS_MANAGED_POLICIES.md](docs/AWS_MANAGED_POLICIES.md) - AWS managed policies
 - [CONTRIBUTING.md](CONTRIBUTING.md) - Contribution guidelines
 - [examples/](examples/) - Usage examples

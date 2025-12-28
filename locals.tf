@@ -148,6 +148,18 @@ locals {
     ]
   ])
 
+  # Flatten all origin groups from all distributions
+  all_origin_groups = flatten([
+    for dist_name, dist_config in local.distributions : [
+      for group in try(dist_config.origin_groups, []) : {
+        dist_name         = dist_name
+        group_id          = group.id
+        failover_criteria = group.failover_criteria
+        members           = group.members
+      }
+    ]
+  ])
+
   # Flatten all behaviors from all distributions with their distribution name
   all_behaviors = flatten([
     for dist_name, dist_config in local.distributions : [

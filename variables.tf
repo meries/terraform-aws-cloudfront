@@ -1,21 +1,25 @@
 variable "distributions_path" {
   description = "Path to the directory containing CloudFront distribution YAML configuration files. Each YAML file defines a distribution with origins, behaviors, and cache policies"
   type        = string
+  default     = "./distributions"
 }
 
 variable "policies_path" {
   description = "Path to the directory containing CloudFront policy YAML files (cache policies, origin request policies, response headers policies)"
   type        = string
+  default     = "./policies"
 }
 
 variable "functions_path" {
   description = "Path to the directory containing CloudFront Functions JavaScript files. Each .js file represents a function that runs at edge locations"
   type        = string
+  default     = "./functions"
 }
 
 variable "key_value_stores_path" {
   description = "Path to the directory containing CloudFront KeyValueStore YAML files for low-latency data storage accessible from CloudFront Functions"
   type        = string
+  default     = "./key-value-stores"
 }
 
 variable "create_route53_records" {

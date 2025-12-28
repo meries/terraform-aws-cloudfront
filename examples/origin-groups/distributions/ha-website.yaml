@@ -1,0 +1,47 @@
+# High Availability Website with S3 Failover
+# Primary bucket in us-east-1, backup bucket in us-west-2
+
+enabled: true
+comment: "HA Website with automatic S3 failover"
+
+# Origins: Primary and Secondary S3 buckets
+origins:
+  - id: primary-s3-us-east-1
+    domain_name: my-website-primary.s3.us-east-1.amazonaws.com
+    type: s3
+
+  - id: backup-s3-us-west-2
+    domain_name: my-website-backup.s3.us-west-2.amazonaws.com
+    type: s3
+
+# Origin Groups: Automatic failover configuration
+origin_groups:
+  - id: s3-failover-group
+    failover_criteria:
+      status_codes: [500, 502, 503, 504]
+    members:
+      - origin_id: primary-s3-us-east-1
+      - origin_id: backup-s3-us-west-2
+
+# Default Behavior: Reference the origin group
+default_behavior:
+  target_origin_id: s3-failover-group
+  cache_policy_name: CachingOptimized
+  viewer_protocol_policy: redirect-to-https
+  compress: true
+  allowed_methods: [ GET, HEAD, OPTIONS ]
+  cached_methods:  [ GET, HEAD ]
+
+# Price Class
+price_class: PriceClass_100
+
+# HTTP Versions
+http_version: http2and3
+
+# IPv6
+ipv6_enabled: true
+
+# Geo Restrictions (optional - disabled by default)
+geo_restriction:
+  restriction_type: none
+  locations: []
