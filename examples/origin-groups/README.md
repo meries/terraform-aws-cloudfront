@@ -24,7 +24,10 @@ Failover time: < 1 second
 
 ## Prerequisites
 
-You must create the S3 buckets yourself:
+1. AWS credentials configured
+2. S3 buckets in different regions (create before deploying)
+
+**Create the S3 buckets:**
 
 ```bash
 # Create primary bucket (us-east-1)
@@ -36,19 +39,138 @@ aws s3 mb s3://my-website-backup --region us-west-2
 
 **Recommended:** Enable S3 Cross-Region Replication to keep buckets synchronized.
 
+## Configuration Files
+
+### main.tf
+
+```hcl
+terraform {
+  required_version = ">= 1.12"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 6.27"
+    }
+  }
+}
+
+provider "aws" {
+  region = "us-east-1"
+}
+
+provider "aws" {
+  alias  = "us_east_1"
+  region = "us-east-1"
+}
+
+module "cloudfront" {
+  source  = "meries/cloudfront/aws"
+  version = "~> 1.0"
+
+  providers = {
+    aws.us_east_1 = aws.us_east_1
+  }
+
+  # Default: Path to your YAML configurations (can be overridden if needed)
+  # distributions_path    = "${path.module}/distributions"
+  # policies_path         = "${path.module}/policies"
+  # functions_path        = "${path.module}/functions"
+  # key_value_stores_path = "${path.module}/key-value-stores"
+
+  # Optional: Resource naming
+  naming_prefix = "ha-"
+
+  # Optional: Tags
+  common_tags = {
+    Environment = "production"
+    ManagedBy   = "Terraform"
+    Example     = "origin-groups-failover"
+  }
+}
+
+# Outputs
+output "distribution_ids" {
+  description = "CloudFront distribution IDs"
+  value       = module.cloudfront.distribution_ids
+}
+
+output "distribution_domain_names" {
+  description = "CloudFront domain names"
+  value       = module.cloudfront.distribution_domain_names
+}
+```
+
+### distributions/ha-website.yaml
+
+```yaml
+enabled: true
+comment: "HA Website with automatic S3 failover"
+
+# Origins: Primary and Secondary S3 buckets
+origins:
+  - id: primary-s3-us-east-1
+    domain_name: my-website-primary.s3.us-east-1.amazonaws.com
+    type: s3
+
+  - id: backup-s3-us-west-2
+    domain_name: my-website-backup.s3.us-west-2.amazonaws.com
+    type: s3
+
+# Origin Groups: Automatic failover configuration
+origin_groups:
+  - id: s3-failover-group
+    failover_criteria:
+      status_codes: [500, 502, 503, 504]
+    members:
+      - origin_id: primary-s3-us-east-1
+      - origin_id: backup-s3-us-west-2
+
+# Default Behavior: Reference the origin group
+default_behavior:
+  target_origin_id: s3-failover-group
+  cache_policy_name: CachingOptimized
+  viewer_protocol_policy: redirect-to-https
+  compress: true
+  allowed_methods:
+    - GET
+    - HEAD
+    - OPTIONS
+  cached_methods:
+    - GET
+    - HEAD
+
+# Price Class
+price_class: PriceClass_100
+
+# HTTP Versions
+http_version: http2and3
+
+# IPv6
+ipv6_enabled: true
+```
+
+### policies/cache-policies.yaml
+
+```yaml
+# Empty - uses AWS managed policy "CachingOptimized"
+```
+
 ## Usage
 
 ```bash
+# Initialize Terraform
 terraform init
+
+# Review the plan
 terraform plan
+
+# Apply the configuration
 terraform apply
+
+# Get the CloudFront domain name
+terraform output distribution_domain_names
 ```
-
-## Configuration Files
-
-- [main.tf](main.tf) - Module configuration
-- [distributions/ha-website.yaml](distributions/ha-website.yaml) - Distribution with origin group
-- [policies/cache-policies.yaml](policies/cache-policies.yaml) - Cache policies (uses AWS managed)
 
 ## Testing Failover
 
@@ -113,7 +235,7 @@ default_behavior:
 
 ## Complete Documentation
 
-See [docs/ORIGIN_GROUPS.md](../../docs/ORIGIN_GROUPS.md) for:
+See [docs/ORIGIN_GROUPS.md](https://github.com/meries/terraform-aws-cloudfront/blob/main/docs/ORIGIN_GROUPS.md) for:
 - Multi-region ALB failover examples
 - Multiple origin groups in one distribution
 - Best practices and monitoring
