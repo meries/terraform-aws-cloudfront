@@ -91,6 +91,16 @@ resource "aws_cloudfront_distribution" "dist" {
         )
       }
     }
+
+    # Lambda@Edge support
+    dynamic "lambda_function_association" {
+      for_each = try(each.value.default_behavior.lambda_function_associations, [])
+      content {
+        event_type   = lambda_function_association.value.event_type
+        lambda_arn   = lambda_function_association.value.lambda_arn
+        include_body = try(lambda_function_association.value.include_body, false)
+      }
+    }
   }
 
   # Ordered cache behaviors (sorting mode configured per distribution in YAML - see BEHAVIORS.md)
@@ -130,6 +140,16 @@ resource "aws_cloudfront_distribution" "dist" {
             aws_cloudfront_function.function[function_association.value.function_name].arn,
             function_association.value.function_arn
           )
+        }
+      }
+
+      # Lambda@Edge support
+      dynamic "lambda_function_association" {
+        for_each = try(ordered_cache_behavior.value.lambda_function_associations, [])
+        content {
+          event_type   = lambda_function_association.value.event_type
+          lambda_arn   = lambda_function_association.value.lambda_arn
+          include_body = try(lambda_function_association.value.include_body, false)
         }
       }
     }
