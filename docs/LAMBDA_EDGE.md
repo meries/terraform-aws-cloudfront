@@ -145,9 +145,9 @@ default_behavior:
   target_origin_id: s3-origin
 
   # Lambda@Edge (you create the function)
-  lambda_associations:
+  lambda_function_associations:
     - event_type: viewer-request
-      lambda_arn: "arn:aws:lambda:us-east-1:123:function:cloudfront-auth:1"
+      lambda_arn: "arn:aws:lambda:us-east-1:123456789012:function:cloudfront-auth:1"
       include_body: false
 ```
 
@@ -219,9 +219,10 @@ default_behavior:
       function_name: add-security-headers
 
   # Lambda@Edge (complex logic)
-  lambda_associations:
+  lambda_function_associations:
     - event_type: origin-request
-      lambda_arn: "arn:aws:lambda:us-east-1:123:function:auth:1"
+      lambda_arn: "arn:aws:lambda:us-east-1:123456789012:function:auth:1"
+      include_body: false
 ```
 
 ## Best Practices
