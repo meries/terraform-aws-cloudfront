@@ -1,0 +1,21 @@
+enabled: true
+comment: "Invalid Single Member - Test Case OG-06"
+create_dns_records: false
+
+origins:
+  - id: primary-s3
+    domain_name: primary.s3.us-east-1.amazonaws.com
+    type: s3
+
+origin_groups:
+  - id: invalid-group
+    failover_criteria:
+      status_codes: [500, 502, 503, 504]
+    members:
+      - origin_id: primary-s3
+
+default_behavior:
+  target_origin_id: invalid-group
+  viewer_protocol_policy: "redirect-to-https"
+  allowed_methods: [GET, HEAD]
+  cached_methods: [GET, HEAD]

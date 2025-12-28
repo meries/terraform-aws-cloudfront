@@ -1,0 +1,31 @@
+enabled: true
+comment: "Invalid Three Members - Test Case OG-07"
+create_dns_records: false
+
+origins:
+  - id: origin-1
+    domain_name: origin1.s3.us-east-1.amazonaws.com
+    type: s3
+
+  - id: origin-2
+    domain_name: origin2.s3.us-west-2.amazonaws.com
+    type: s3
+
+  - id: origin-3
+    domain_name: origin3.s3.eu-west-1.amazonaws.com
+    type: s3
+
+origin_groups:
+  - id: invalid-group
+    failover_criteria:
+      status_codes: [500, 502, 503, 504]
+    members:
+      - origin_id: origin-1
+      - origin_id: origin-2
+      - origin_id: origin-3
+
+default_behavior:
+  target_origin_id: invalid-group
+  viewer_protocol_policy: "redirect-to-https"
+  allowed_methods: [GET, HEAD]
+  cached_methods: [GET, HEAD]

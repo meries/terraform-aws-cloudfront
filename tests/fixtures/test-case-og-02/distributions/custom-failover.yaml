@@ -1,0 +1,28 @@
+enabled: true
+comment: "Custom Origin Failover - Test Case OG-02"
+create_dns_records: false
+
+origins:
+  - id: primary-api
+    domain_name: api.eu-west-1.example.com
+    type: custom
+    protocol_policy: https-only
+
+  - id: secondary-api
+    domain_name: api.us-east-1.example.com
+    type: custom
+    protocol_policy: https-only
+
+origin_groups:
+  - id: api-failover-group
+    failover_criteria:
+      status_codes: [500, 502, 503, 504]
+    members:
+      - origin_id: primary-api
+      - origin_id: secondary-api
+
+default_behavior:
+  target_origin_id: api-failover-group
+  viewer_protocol_policy: "redirect-to-https"
+  allowed_methods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+  cached_methods: [GET, HEAD]
