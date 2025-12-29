@@ -7,7 +7,7 @@ This directory contains automated tests for the CloudFront Terraform module usin
 ```
 tests/
 ├── README.md                          # This file
-├── basic-distribution.tftest.hcl      # Tests for basic distribution features
+├── distribution.tftest.hcl            # Tests for basic distribution features
 └── fixtures/                          # Test fixtures (YAML configurations)
     ├── test-case-01/                  # Simple S3 distribution
     ├── test-case-03/                  # Multiple distributions
@@ -36,14 +36,14 @@ terraform test -verbose
 ### Run a specific test file
 
 ```bash
-terraform test -filter=tests/basic-distribution.tftest.hcl
+terraform test -filter=tests/distribution.tftest.hcl
 ```
 
 ## Test Cases Implemented
 
 Based on [test.csv](../../test.csv), the following test cases are currently implemented:
 
-### Basic Distribution Tests (basic-distribution.tftest.hcl)
+### Basic Distribution Tests (distribution.tftest.hcl)
 
 | Test Case | Description | Status |
 |-----------|-------------|--------|
