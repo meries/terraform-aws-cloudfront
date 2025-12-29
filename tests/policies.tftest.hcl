@@ -17,7 +17,6 @@ run "cache_policy_custom" {
     policies_path          = "./tests/fixtures/test-case-30/policies"
     functions_path         = "./tests/fixtures/test-case-30/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-30/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -34,7 +33,6 @@ run "cache_policy_aws_managed" {
     policies_path          = "./tests/fixtures/test-case-31/policies"
     functions_path         = "./tests/fixtures/test-case-31/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-31/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -51,7 +49,6 @@ run "cache_ttl_values" {
     policies_path          = "./tests/fixtures/test-case-32/policies"
     functions_path         = "./tests/fixtures/test-case-32/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-32/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -68,7 +65,6 @@ run "cookies_behavior" {
     policies_path          = "./tests/fixtures/test-case-33/policies"
     functions_path         = "./tests/fixtures/test-case-33/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-33/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -85,7 +81,6 @@ run "headers_behavior" {
     policies_path          = "./tests/fixtures/test-case-34/policies"
     functions_path         = "./tests/fixtures/test-case-34/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-34/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -102,7 +97,6 @@ run "query_strings_behavior" {
     policies_path          = "./tests/fixtures/test-case-35/policies"
     functions_path         = "./tests/fixtures/test-case-35/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-35/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -119,7 +113,6 @@ run "compression_settings" {
     policies_path          = "./tests/fixtures/test-case-36/policies"
     functions_path         = "./tests/fixtures/test-case-36/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-36/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -136,7 +129,6 @@ run "origin_request_policy" {
     policies_path          = "./tests/fixtures/test-case-37/policies"
     functions_path         = "./tests/fixtures/test-case-37/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-37/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -153,7 +145,6 @@ run "origin_request_headers" {
     policies_path          = "./tests/fixtures/test-case-38/policies"
     functions_path         = "./tests/fixtures/test-case-38/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-38/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -170,7 +161,6 @@ run "response_headers_policy" {
     policies_path          = "./tests/fixtures/test-case-39/policies"
     functions_path         = "./tests/fixtures/test-case-39/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-39/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -187,7 +177,6 @@ run "hsts_headers" {
     policies_path          = "./tests/fixtures/test-case-40/policies"
     functions_path         = "./tests/fixtures/test-case-40/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-40/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -204,7 +193,6 @@ run "csp_headers" {
     policies_path          = "./tests/fixtures/test-case-41/policies"
     functions_path         = "./tests/fixtures/test-case-41/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-41/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -221,7 +209,6 @@ run "frame_options" {
     policies_path          = "./tests/fixtures/test-case-42/policies"
     functions_path         = "./tests/fixtures/test-case-42/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-42/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -238,7 +225,6 @@ run "referrer_policy" {
     policies_path          = "./tests/fixtures/test-case-43/policies"
     functions_path         = "./tests/fixtures/test-case-43/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-43/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -255,7 +241,6 @@ run "xss_protection" {
     policies_path          = "./tests/fixtures/test-case-44/policies"
     functions_path         = "./tests/fixtures/test-case-44/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-44/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -272,7 +257,6 @@ run "cors_headers" {
     policies_path          = "./tests/fixtures/test-case-45/policies"
     functions_path         = "./tests/fixtures/test-case-45/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-45/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -289,7 +273,6 @@ run "cors_methods" {
     policies_path          = "./tests/fixtures/test-case-46/policies"
     functions_path         = "./tests/fixtures/test-case-46/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-46/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -306,7 +289,6 @@ run "cors_origins" {
     policies_path          = "./tests/fixtures/test-case-47/policies"
     functions_path         = "./tests/fixtures/test-case-47/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-47/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -323,7 +305,6 @@ run "custom_headers" {
     policies_path          = "./tests/fixtures/test-case-48/policies"
     functions_path         = "./tests/fixtures/test-case-48/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-48/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }

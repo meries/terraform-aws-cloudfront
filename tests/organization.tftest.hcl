@@ -17,7 +17,6 @@ run "multiple_yaml_files" {
     policies_path          = "./tests/fixtures/test-case-79/policies"
     functions_path         = "./tests/fixtures/test-case-79/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-79/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -34,7 +33,6 @@ run "recursive_loading" {
     policies_path          = "./tests/fixtures/test-case-80/policies"
     functions_path         = "./tests/fixtures/test-case-80/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-80/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -51,7 +49,6 @@ run "module_version" {
     policies_path          = "./tests/fixtures/test-case-81/policies"
     functions_path         = "./tests/fixtures/test-case-81/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-81/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       ModuleVersion = "v1.0.0"

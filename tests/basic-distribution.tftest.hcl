@@ -24,7 +24,6 @@ run "create_simple_s3_distribution" {
     policies_path          = "./tests/fixtures/test-case-01/policies"
     functions_path         = "./tests/fixtures/test-case-01/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-01/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -48,7 +47,6 @@ run "create_multiple_distributions" {
     policies_path          = "./tests/fixtures/test-case-03/policies"
     functions_path         = "./tests/fixtures/test-case-03/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-03/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -69,7 +67,6 @@ run "test_price_classes" {
     policies_path          = "./tests/fixtures/test-case-04/policies"
     functions_path         = "./tests/fixtures/test-case-04/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-04/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -86,7 +83,6 @@ run "test_ipv6_support" {
     policies_path          = "./tests/fixtures/test-case-05/policies"
     functions_path         = "./tests/fixtures/test-case-05/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-05/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -103,7 +99,6 @@ run "test_default_root_object" {
     policies_path          = "./tests/fixtures/test-case-07/policies"
     functions_path         = "./tests/fixtures/test-case-07/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-07/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -120,7 +115,6 @@ run "test_distribution_comment" {
     policies_path          = "./tests/fixtures/test-case-08/policies"
     functions_path         = "./tests/fixtures/test-case-08/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-08/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }

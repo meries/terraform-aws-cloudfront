@@ -37,7 +37,6 @@ module "cloudfront" {
   naming_suffix = ""
 
   # Production settings (full feature set)
-  create_route53_records = true
   create_log_buckets     = true
   enable_monitoring      = true
 
@@ -56,12 +55,6 @@ module "cloudfront" {
     error_rate_evaluation_periods = 2
     sns_topic_arn                 = "arn:aws:sns:eu-west-1:123456789012:cloudfront-alerts-prod"
     create_dashboard              = true
-  }
-
-  # Route53 zone mapping
-  route53_zones = {
-    "www.example.com" = "example.com"
-    "example.com"     = "example.com"
   }
 }
 

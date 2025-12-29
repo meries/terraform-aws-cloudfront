@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2025-12-29
+
+### Removed
+- **BREAKING: Removed obsolete variables** `create_route53_records` and `route53_zones`
+  - DNS record creation is now fully controlled by the YAML `create_dns_records` parameter per distribution
+  - Route53 zones are automatically detected using `data.aws_route53_zone` based on alias domain names
+  - Simplifies configuration and reduces confusion
+  - Migration: Remove these variables from module calls and use `create_dns_records` in distribution YAML files instead
+
 ## [1.0.1] - 2025-12-28
 
 ### Added

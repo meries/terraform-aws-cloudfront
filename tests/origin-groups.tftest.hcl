@@ -17,7 +17,6 @@ run "origin_group_basic_s3_failover" {
     policies_path          = "./tests/fixtures/test-case-og-01/policies"
     functions_path         = "./tests/fixtures/test-case-og-01/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-og-01/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -38,7 +37,6 @@ run "origin_group_custom_origins" {
     policies_path          = "./tests/fixtures/test-case-og-02/policies"
     functions_path         = "./tests/fixtures/test-case-og-02/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-og-02/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -59,7 +57,6 @@ run "origin_group_multiple_groups" {
     policies_path          = "./tests/fixtures/test-case-og-03/policies"
     functions_path         = "./tests/fixtures/test-case-og-03/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-og-03/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -80,7 +77,6 @@ run "origin_group_behavior_reference" {
     policies_path          = "./tests/fixtures/test-case-og-04/policies"
     functions_path         = "./tests/fixtures/test-case-og-04/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-og-04/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -101,7 +97,6 @@ run "origin_group_backward_compatibility" {
     policies_path          = "./tests/fixtures/test-case-og-05/policies"
     functions_path         = "./tests/fixtures/test-case-og-05/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-og-05/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -122,7 +117,6 @@ run "origin_group_invalid_origin_reference" {
     policies_path          = "./tests/fixtures/test-case-og-08/policies"
     functions_path         = "./tests/fixtures/test-case-og-08/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-og-08/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -147,7 +141,6 @@ run "origin_group_invalid_status_code" {
     policies_path          = "./tests/fixtures/test-case-og-09/policies"
     functions_path         = "./tests/fixtures/test-case-og-09/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-og-09/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -172,7 +165,6 @@ run "origin_group_duplicate_ids" {
     policies_path          = "./tests/fixtures/test-case-og-10/policies"
     functions_path         = "./tests/fixtures/test-case-og-10/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-og-10/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"

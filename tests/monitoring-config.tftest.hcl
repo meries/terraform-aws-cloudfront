@@ -17,7 +17,6 @@ run "additional_metrics" {
     policies_path          = "./tests/fixtures/test-case-74/policies"
     functions_path         = "./tests/fixtures/test-case-74/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-74/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -34,7 +33,6 @@ run "naming_prefix_suffix" {
     policies_path          = "./tests/fixtures/test-case-75/policies"
     functions_path         = "./tests/fixtures/test-case-75/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-75/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     naming_prefix          = "test"
     naming_suffix          = "prod"
@@ -53,7 +51,6 @@ run "common_tags" {
     policies_path          = "./tests/fixtures/test-case-76/policies"
     functions_path         = "./tests/fixtures/test-case-76/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-76/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "production"
@@ -75,7 +72,6 @@ run "default_tags" {
     policies_path          = "./tests/fixtures/test-case-77/policies"
     functions_path         = "./tests/fixtures/test-case-77/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-77/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       ManagedBy = "Terraform"

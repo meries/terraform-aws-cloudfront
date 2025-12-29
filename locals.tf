@@ -255,23 +255,13 @@ locals {
   # Create a map for Route53 records
   # Supports per-distribution DNS record control via 'create_dns_records' parameter
   # Automatically detects Route53 zone IDs using data sources based on domain names
-  # Falls back to global route53_zones variable if provided for backward compatibility
   route53_records = {
     for item in local.all_aliases :
     item.alias => merge(item, {
-      zone_id = try(
-        # First, try to get zone_id from data source (automatic detection)
-        data.aws_route53_zone.zones[item.zone_name].zone_id,
-        # Fallback to global route53_zones variable (backward compatibility)
-        var.route53_zones[item.zone_name],
-        # If neither exists, this will be null and filtered out
-        null
-      )
+      zone_id = data.aws_route53_zone.zones[item.zone_name].zone_id
     })
     if try(local.distributions[item.dist_name].create_dns_records, true) &&
-    # Check if we can get a zone_id from either data source or variable
-    (try(data.aws_route53_zone.zones[item.zone_name].zone_id, null) != null ||
-    (var.create_route53_records && contains(keys(var.route53_zones), item.zone_name)))
+    try(data.aws_route53_zone.zones[item.zone_name].zone_id, null) != null
   }
 
   # Used by validation.tf for checks

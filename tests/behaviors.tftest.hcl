@@ -17,7 +17,6 @@ run "default_behavior" {
     policies_path          = "./tests/fixtures/test-case-22/policies"
     functions_path         = "./tests/fixtures/test-case-22/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-22/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -38,7 +37,6 @@ run "ordered_behaviors" {
     policies_path          = "./tests/fixtures/test-case-23/policies"
     functions_path         = "./tests/fixtures/test-case-23/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-23/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -59,7 +57,6 @@ run "behavior_sorting_auto" {
     policies_path          = "./tests/fixtures/test-case-24/policies"
     functions_path         = "./tests/fixtures/test-case-24/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-24/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -80,7 +77,6 @@ run "behavior_sorting_manual" {
     policies_path          = "./tests/fixtures/test-case-25/policies"
     functions_path         = "./tests/fixtures/test-case-25/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-25/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -101,7 +97,6 @@ run "viewer_protocol_policy" {
     policies_path          = "./tests/fixtures/test-case-26/policies"
     functions_path         = "./tests/fixtures/test-case-26/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-26/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -122,7 +117,6 @@ run "allowed_methods" {
     policies_path          = "./tests/fixtures/test-case-27/policies"
     functions_path         = "./tests/fixtures/test-case-27/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-27/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -143,7 +137,6 @@ run "cached_methods" {
     policies_path          = "./tests/fixtures/test-case-28/policies"
     functions_path         = "./tests/fixtures/test-case-28/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-28/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -164,7 +157,6 @@ run "compression" {
     policies_path          = "./tests/fixtures/test-case-29/policies"
     functions_path         = "./tests/fixtures/test-case-29/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-29/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"

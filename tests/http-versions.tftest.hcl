@@ -17,7 +17,6 @@ run "http_versions" {
     policies_path          = "./tests/fixtures/test-case-06/policies"
     functions_path         = "./tests/fixtures/test-case-06/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-06/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"

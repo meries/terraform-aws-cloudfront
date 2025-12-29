@@ -37,7 +37,6 @@ module "cloudfront" {
   naming_suffix = ""
 
   # Staging settings (more features than dev, less than prod)
-  create_route53_records = true  # Auto DNS in staging
   create_log_buckets     = false # Use existing bucket or no logs
   enable_monitoring      = false # No monitoring in staging
 
@@ -47,11 +46,6 @@ module "cloudfront" {
     ManagedBy   = "Terraform"
     Team        = "Platform"
     Project     = "CloudFront-Example"
-  }
-
-  # Optional: Route53 zone mapping if auto-creating records
-  route53_zones = {
-    "staging.example.com" = "example.com"
   }
 }
 
