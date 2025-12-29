@@ -37,7 +37,6 @@ module "cloudfront" {
   naming_suffix = ""
 
   # Optional: Automation features
-  create_route53_records = false
   create_log_buckets     = false
   enable_monitoring      = false
 

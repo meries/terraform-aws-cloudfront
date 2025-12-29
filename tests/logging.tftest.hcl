@@ -17,7 +17,6 @@ run "cloudfront_logs" {
     policies_path          = "./tests/fixtures/test-case-60/policies"
     functions_path         = "./tests/fixtures/test-case-60/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-60/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -34,7 +33,6 @@ run "log_bucket_creation" {
     policies_path          = "./tests/fixtures/test-case-61/policies"
     functions_path         = "./tests/fixtures/test-case-61/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-61/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = true
   }
 }
@@ -51,7 +49,6 @@ run "log_prefix" {
     policies_path          = "./tests/fixtures/test-case-62/policies"
     functions_path         = "./tests/fixtures/test-case-62/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-62/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -68,7 +65,6 @@ run "include_cookies_in_logs" {
     policies_path          = "./tests/fixtures/test-case-63/policies"
     functions_path         = "./tests/fixtures/test-case-63/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-63/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -85,7 +81,6 @@ run "log_bucket_lifecycle" {
     policies_path          = "./tests/fixtures/test-case-64/policies"
     functions_path         = "./tests/fixtures/test-case-64/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-64/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = true
   }
 }

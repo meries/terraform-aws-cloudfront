@@ -37,7 +37,6 @@ module "cloudfront" {
   naming_suffix = ""
 
   # Development settings (minimal features for cost optimization)
-  create_route53_records = false # Manual DNS in dev
   create_log_buckets     = false # No logs in dev
   enable_monitoring      = false # No monitoring in dev
 

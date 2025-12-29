@@ -17,7 +17,6 @@ run "s3_origin" {
     policies_path          = "./tests/fixtures/test-case-13/policies"
     functions_path         = "./tests/fixtures/test-case-13/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-13/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -38,7 +37,6 @@ run "custom_origin" {
     policies_path          = "./tests/fixtures/test-case-14/policies"
     functions_path         = "./tests/fixtures/test-case-14/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-14/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -59,7 +57,6 @@ run "origin_connection_settings" {
     policies_path          = "./tests/fixtures/test-case-15/policies"
     functions_path         = "./tests/fixtures/test-case-15/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-15/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -80,7 +77,6 @@ run "origin_custom_ports" {
     policies_path          = "./tests/fixtures/test-case-16/policies"
     functions_path         = "./tests/fixtures/test-case-16/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-16/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -101,7 +97,6 @@ run "origin_protocol_policy" {
     policies_path          = "./tests/fixtures/test-case-17/policies"
     functions_path         = "./tests/fixtures/test-case-17/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-17/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -122,7 +117,6 @@ run "origin_ssl_protocols" {
     policies_path          = "./tests/fixtures/test-case-18/policies"
     functions_path         = "./tests/fixtures/test-case-18/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-18/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -143,7 +137,6 @@ run "origin_shield" {
     policies_path          = "./tests/fixtures/test-case-19/policies"
     functions_path         = "./tests/fixtures/test-case-19/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-19/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -164,7 +157,6 @@ run "multiple_origins" {
     policies_path          = "./tests/fixtures/test-case-20/policies"
     functions_path         = "./tests/fixtures/test-case-20/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-20/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"

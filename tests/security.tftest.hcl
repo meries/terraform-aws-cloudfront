@@ -17,7 +17,6 @@ run "origin_access_control" {
     policies_path          = "./tests/fixtures/test-case-21/policies"
     functions_path         = "./tests/fixtures/test-case-21/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-21/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -34,7 +33,6 @@ run "waf_integration" {
     policies_path          = "./tests/fixtures/test-case-65/policies"
     functions_path         = "./tests/fixtures/test-case-65/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-65/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -51,7 +49,6 @@ run "geo_restriction_none" {
     policies_path          = "./tests/fixtures/test-case-66/policies"
     functions_path         = "./tests/fixtures/test-case-66/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-66/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -68,7 +65,6 @@ run "geo_restriction_whitelist" {
     policies_path          = "./tests/fixtures/test-case-67/policies"
     functions_path         = "./tests/fixtures/test-case-67/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-67/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -85,7 +81,6 @@ run "geo_restriction_blacklist" {
     policies_path          = "./tests/fixtures/test-case-68/policies"
     functions_path         = "./tests/fixtures/test-case-68/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-68/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }

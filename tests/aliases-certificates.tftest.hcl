@@ -17,7 +17,6 @@ run "multiple_aliases" {
     policies_path          = "./tests/fixtures/test-case-09/policies"
     functions_path         = "./tests/fixtures/test-case-09/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-09/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -38,7 +37,6 @@ run "acm_certificate_with_aliases" {
     policies_path          = "./tests/fixtures/test-case-10/policies"
     functions_path         = "./tests/fixtures/test-case-10/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-10/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -59,7 +57,6 @@ run "certificate_ssl_protocols" {
     policies_path          = "./tests/fixtures/test-case-11/policies"
     functions_path         = "./tests/fixtures/test-case-11/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-11/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"
@@ -80,7 +77,6 @@ run "cloudfront_default_cert" {
     policies_path          = "./tests/fixtures/test-case-12/policies"
     functions_path         = "./tests/fixtures/test-case-12/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-12/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
     common_tags = {
       Environment = "test"

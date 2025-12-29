@@ -12,7 +12,6 @@ mock_provider "aws" {
   }
 }
 
-# Test Case 69: create_route53_records=true, create_dns_records=true
 # Expected: DNS records created
 # Status: Plan validates without errors
 
@@ -24,7 +23,6 @@ run "route53_records_auto" {
     policies_path          = "./tests/fixtures/test-case-69/policies"
     functions_path         = "./tests/fixtures/test-case-69/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-69/key-value-stores"
-    create_route53_records = true
     create_log_buckets     = false
   }
 }
@@ -41,7 +39,6 @@ run "route53_records_disabled" {
     policies_path          = "./tests/fixtures/test-case-70/policies"
     functions_path         = "./tests/fixtures/test-case-70/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-70/key-value-stores"
-    create_route53_records = true
     create_log_buckets     = false
   }
 }
@@ -66,7 +63,6 @@ run "cross_account_dns" {
     policies_path          = "./tests/fixtures/test-case-73/policies"
     functions_path         = "./tests/fixtures/test-case-73/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-73/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }

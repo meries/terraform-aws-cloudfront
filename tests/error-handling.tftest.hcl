@@ -17,7 +17,6 @@ run "custom_error_responses" {
     policies_path          = "./tests/fixtures/test-case-56/policies"
     functions_path         = "./tests/fixtures/test-case-56/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-56/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -34,7 +33,6 @@ run "multiple_error_codes" {
     policies_path          = "./tests/fixtures/test-case-57/policies"
     functions_path         = "./tests/fixtures/test-case-57/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-57/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -51,7 +49,6 @@ run "error_response_codes" {
     policies_path          = "./tests/fixtures/test-case-58/policies"
     functions_path         = "./tests/fixtures/test-case-58/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-58/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -68,7 +65,6 @@ run "error_caching" {
     policies_path          = "./tests/fixtures/test-case-59/policies"
     functions_path         = "./tests/fixtures/test-case-59/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-59/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }

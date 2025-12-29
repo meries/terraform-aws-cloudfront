@@ -17,7 +17,6 @@ run "policy_unused" {
     policies_path          = "./tests/fixtures/test-case-95/policies"
     functions_path         = "./tests/fixtures/test-case-95/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-95/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -34,7 +33,6 @@ run "function_unused" {
     policies_path          = "./tests/fixtures/test-case-96/policies"
     functions_path         = "./tests/fixtures/test-case-96/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-96/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -51,7 +49,6 @@ run "kvs_unused" {
     policies_path          = "./tests/fixtures/test-case-97/policies"
     functions_path         = "./tests/fixtures/test-case-97/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-97/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }

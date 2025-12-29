@@ -17,7 +17,6 @@ run "key_value_store" {
     policies_path          = "./tests/fixtures/test-case-53/policies"
     functions_path         = "./tests/fixtures/test-case-53/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-53/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -34,7 +33,6 @@ run "kvs_items" {
     policies_path          = "./tests/fixtures/test-case-54/policies"
     functions_path         = "./tests/fixtures/test-case-54/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-54/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }
@@ -51,7 +49,6 @@ run "kvs_with_function" {
     policies_path          = "./tests/fixtures/test-case-55/policies"
     functions_path         = "./tests/fixtures/test-case-55/functions"
     key_value_stores_path  = "./tests/fixtures/test-case-55/key-value-stores"
-    create_route53_records = false
     create_log_buckets     = false
   }
 }

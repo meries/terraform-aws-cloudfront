@@ -77,9 +77,8 @@ module "cloudfront" {
   naming_suffix = ""
 
   # Optional: Automation features
-  create_route53_records = false
-  create_log_buckets     = false
-  enable_monitoring      = false
+  create_log_buckets = false
+  enable_monitoring  = false
 
   # Optional: Tags
   common_tags = {
@@ -113,9 +112,8 @@ aliases:
   - www.example.com
 
 # DNS record creation control
-# Set to false if the Route53 zone is in a different AWS account
-# or if you want to manage DNS records manually
-# Default: true (records will be created if route53_zones is configured)
+# Set to false if you want to manage DNS records manually
+# Default: true (Route53 zones are automatically detected based on alias domain names)
 create_dns_records: false
 
 certificate:

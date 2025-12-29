@@ -22,18 +22,6 @@ variable "key_value_stores_path" {
   default     = "./key-value-stores"
 }
 
-variable "create_route53_records" {
-  description = "Automatically create Route53 DNS alias records (A and AAAA) pointing to CloudFront distributions for configured alternate domain names"
-  type        = bool
-  default     = false
-}
-
-variable "route53_zones" {
-  description = "Map of domain names to Route53 hosted zone IDs for DNS record creation. Example: { 'example.com' = 'Z1234567890ABC' }"
-  type        = map(string)
-  default     = {}
-}
-
 variable "create_log_buckets" {
   description = "Automatically create and configure S3 buckets for CloudFront access logs with appropriate policies, lifecycle rules, and encryption"
   type        = bool
