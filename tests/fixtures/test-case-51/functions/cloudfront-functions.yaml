@@ -1,4 +1,0 @@
-test-function-51:
-  comment: "Viewer request function"
-  runtime: "cloudfront-js-2.0"
-  code_file: "src/viewer-request.js"

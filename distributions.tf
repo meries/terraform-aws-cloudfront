@@ -10,6 +10,7 @@ resource "aws_cloudfront_distribution" "dist" {
   price_class         = try(each.value.price_class, "PriceClass_100")
   aliases             = try(each.value.aliases, [])
   web_acl_id          = try(each.value.web_acl_id, null)
+  http_version        = try(each.value.http_version, "http2")
 
   # Origins
   dynamic "origin" {

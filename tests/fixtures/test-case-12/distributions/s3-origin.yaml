@@ -1,0 +1,14 @@
+enabled: true
+comment: "S3 Origin - Test Case 12"
+create_dns_records: false
+
+origins:
+  - id: s3-origin
+    domain_name: my-bucket.s3.us-east-1.amazonaws.com
+    type: s3
+
+default_behavior:
+  target_origin_id: s3-origin
+  viewer_protocol_policy: "redirect-to-https"
+  allowed_methods: [GET, HEAD]
+  cached_methods: [GET, HEAD]
