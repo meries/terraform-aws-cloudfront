@@ -1,9 +1,11 @@
 enabled: true
 comment: "TLS Protocols - Test Case 11"
 aliases: [tls.example.com]
+
 certificate:
   acm_certificate_arn: "arn:aws:acm:us-east-1:123456789012:certificate/test-11"
   minimum_protocol_version: "TLSv1.2_2019"
+
 create_dns_records: false
 
 origins:

@@ -1,4 +1,0 @@
-test-function-49:
-  comment: "URL rewrite function"
-  runtime: "cloudfront-js-2.0"
-  code_file: "src/url-rewrite.js"
