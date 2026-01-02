@@ -74,3 +74,9 @@ variable "module_version" {
   type        = string
   default     = ""
 }
+
+variable "prevent_destroy" {
+  description = "Enable lifecycle prevent_destroy on critical resources (distributions, log buckets, key-value stores, policies, OAC). Set to true for production environments to prevent accidental deletion"
+  type        = bool
+  default     = false
+}

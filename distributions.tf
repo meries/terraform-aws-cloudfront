@@ -218,4 +218,8 @@ resource "aws_cloudfront_distribution" "dist" {
     var.common_tags,
     try(each.value.tags, {})
   )
+
+  lifecycle {
+    prevent_destroy = var.prevent_destroy
+  }
 }

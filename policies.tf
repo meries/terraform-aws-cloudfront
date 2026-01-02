@@ -49,6 +49,10 @@ resource "aws_cloudfront_cache_policy" "policy" {
       }
     }
   }
+
+  lifecycle {
+    prevent_destroy = var.prevent_destroy
+  }
 }
 
 
@@ -91,6 +95,10 @@ resource "aws_cloudfront_origin_request_policy" "policy" {
         items = try(each.value.query_strings, [])
       }
     }
+  }
+
+  lifecycle {
+    prevent_destroy = var.prevent_destroy
   }
 }
 
@@ -214,5 +222,9 @@ resource "aws_cloudfront_response_headers_policy" "policy" {
       enabled       = each.value.server_timing_headers.enabled
       sampling_rate = try(each.value.server_timing_headers.sampling_rate, 0)
     }
+  }
+
+  lifecycle {
+    prevent_destroy = var.prevent_destroy
   }
 }

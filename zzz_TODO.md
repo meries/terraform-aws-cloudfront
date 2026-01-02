@@ -5,11 +5,15 @@
 ### Core Features
 - [ ] Continuous Deployment (blue/green deployments)
 - [ ] Lambda@Edge module integration (separate module)
+- [ ] Support an Amazon CloudFront VPC origin (endpoint)
 
 ### Monitoring & Observability
 - [ ] Enhanced CloudWatch metrics (cache hit/miss ratios, latency p50/p95/p99)
 - [ ] Real-time Logs to Kinesis Data Streams
 - [ ] Improved CloudWatch dashboards with key metrics
+
+### Security
+- [x] Prevent Destroy Protection
 
 ### Documentation
 - [ ] Architecture diagrams (mermaid or draw.io)

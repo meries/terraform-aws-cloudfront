@@ -5,6 +5,10 @@ resource "aws_cloudfront_key_value_store" "kvs" {
 
   name    = "${var.naming_prefix}${each.key}${var.naming_suffix}"
   comment = try(each.value.comment, "Key Value Store ${each.key}")
+
+  lifecycle {
+    prevent_destroy = var.prevent_destroy
+  }
 }
 
 # Individual key-value pairs

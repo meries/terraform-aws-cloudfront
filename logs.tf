@@ -15,6 +15,10 @@ resource "aws_s3_bucket" "cloudfront_logs" {
       Purpose = "CloudFront Access Logs"
     }
   )
+
+  lifecycle {
+    prevent_destroy = var.prevent_destroy
+  }
 }
 
 # Enable versioning for log buckets

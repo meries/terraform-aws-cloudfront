@@ -11,4 +11,8 @@ resource "aws_cloudfront_function" "function" {
 
   # Key Value Store associations (list of ARNs)
   key_value_store_associations = try(each.value.key_value_store_name, null) != null ? [aws_cloudfront_key_value_store.kvs[each.value.key_value_store_name].arn] : []
+
+  lifecycle {
+    prevent_destroy = var.prevent_destroy
+  }
 }
