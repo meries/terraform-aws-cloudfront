@@ -86,6 +86,7 @@ terraform/
 | <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Prefix string to prepend to all resource names. Useful for environment segregation (e.g., 'prod-', 'staging-') or multi-tenant deployments | `string` | `""` | no |
 | <a name="input_naming_suffix"></a> [naming\_suffix](#input\_naming\_suffix) | Suffix string to append to all resource names. Useful for regional identification (e.g., '-us-east-1') or versioning (e.g., '-v2') | `string` | `""` | no |
 | <a name="input_policies_path"></a> [policies\_path](#input\_policies\_path) | Path to the directory containing CloudFront policy YAML files (cache policies, origin request policies, response headers policies) | `string` | `"./policies"` | no |
+| <a name="input_prevent_destroy"></a> [prevent\_destroy](#input\_prevent\_destroy) | Enable lifecycle prevent\_destroy on critical resources (distributions, log buckets, key-value stores, policies, OAC). Set to true for production environments to prevent accidental deletion | `bool` | `false` | no |
 
 ## Outputs
 
