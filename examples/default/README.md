@@ -64,7 +64,7 @@ provider "aws" {
 
 module "cloudfront" {
   source  = "meries/cloudfront/aws"
-  version = "1.0.1"
+  version = "1.0.3"
 
   # Default: Path to your YAML configurations (can be overridden if needed)
   # distributions_path      = "${path.module}/distributions"
