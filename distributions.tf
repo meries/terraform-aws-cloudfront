@@ -101,6 +101,13 @@ resource "aws_cloudfront_distribution" "dist" {
       null
     )
 
+    # Trusted Key Groups (Signed URLs/Cookies)
+    trusted_key_groups = try(
+      each.value.default_behavior.trusted_key_group_name != null ? [aws_cloudfront_key_group.group[each.value.default_behavior.trusted_key_group_name].id] : null,
+      each.value.default_behavior.trusted_key_group_ids,
+      null
+    )
+
     # CloudFront Functions support
     dynamic "function_association" {
       for_each = try(each.value.default_behavior.function_associations, [])
@@ -150,6 +157,13 @@ resource "aws_cloudfront_distribution" "dist" {
       response_headers_policy_id = try(
         aws_cloudfront_response_headers_policy.policy[ordered_cache_behavior.value.response_headers_policy_name].id,
         ordered_cache_behavior.value.response_headers_policy_id,
+        null
+      )
+
+      # Trusted Key Groups (Signed URLs/Cookies)
+      trusted_key_groups = try(
+        ordered_cache_behavior.value.trusted_key_group_name != null ? [aws_cloudfront_key_group.group[ordered_cache_behavior.value.trusted_key_group_name].id] : null,
+        ordered_cache_behavior.value.trusted_key_group_ids,
         null
       )
 

@@ -22,6 +22,12 @@ variable "key_value_stores_path" {
   default     = "./key-value-stores"
 }
 
+variable "trusted_key_groups_path" {
+  description = "Path to the directory containing Trusted Key Groups YAML files for signed URLs and signed cookies (private content access control)"
+  type        = string
+  default     = "./trusted-key-groups"
+}
+
 variable "create_log_buckets" {
   description = "Automatically create and configure S3 buckets for CloudFront access logs with appropriate policies, lifecycle rules, and encryption"
   type        = bool

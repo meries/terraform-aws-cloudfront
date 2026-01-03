@@ -243,6 +243,44 @@ behaviors:
 - Invalidates `/*` for default behavior or specific `path_pattern` for ordered behaviors
 - First 1000 invalidations per month are free
 
+## Trusted Key Groups (Signed URLs & Cookies)
+
+Restrict access to private content using signed URLs or signed cookies:
+
+**1. Define key groups in `trusted-key-groups/trusted-key-groups.yaml`:**
+
+```yaml
+video-streaming:
+  comment: "Keys for premium video content"
+  public_keys:
+    - name: "production-key-2024"
+      comment: "Production signing key"
+      encoded_key_file: "keys/prod-key.pem"  # Path relative to trusted-key-groups/
+
+    - name: "production-key-2025"
+      comment: "Rotation key for 2025"
+      encoded_key: |
+        -----BEGIN PUBLIC KEY-----
+        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
+        -----END PUBLIC KEY-----
+```
+
+**2. Reference in distribution behaviors:**
+
+```yaml
+behaviors:
+  - path_pattern: "/premium/*"
+    target_origin_id: s3-premium
+    trusted_key_group_name: "video-streaming"  # Module-managed key group
+```
+
+**How it works:**
+- Your app generates signed URLs/cookies using the **private key**
+- CloudFront verifies signatures using the **public key** from the key group
+- Invalid signatures are rejected with 403 Forbidden
+
+See `examples/signed-urls/` for complete setup.
+
 ## CloudFront Access Logs
 
 ```yaml

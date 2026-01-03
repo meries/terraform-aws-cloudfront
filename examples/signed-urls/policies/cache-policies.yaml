@@ -1,0 +1,31 @@
+public-content:
+  comment: "Caching for public content"
+  min_ttl: 0
+  default_ttl: 86400    # 1 day
+  max_ttl: 31536000     # 1 year
+  enable_accept_encoding_gzip: true
+  enable_accept_encoding_brotli: true
+  cookies_behavior: "none"
+  headers_behavior: "none"
+  query_strings_behavior: "none"
+
+premium-content:
+  comment: "Caching for premium signed content"
+  min_ttl: 0
+  default_ttl: 3600     # 1 hour
+  max_ttl: 86400        # 1 day
+  enable_accept_encoding_gzip: true
+  enable_accept_encoding_brotli: true
+  cookies_behavior: "none"
+  headers_behavior: "none"
+  query_strings_behavior: "none"
+
+api-cache:
+  comment: "Minimal caching for API"
+  min_ttl: 0
+  default_ttl: 60       # 1 minute
+  max_ttl: 3600         # 1 hour
+  enable_accept_encoding_gzip: true
+  cookies_behavior: "none"
+  headers_behavior: "none"
+  query_strings_behavior: "all"
