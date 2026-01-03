@@ -44,6 +44,8 @@ behaviors:
   - path_pattern: "/assets/*"
     target_origin_id: s3-website
     cache_policy_name: "website-cache"
+    # Enable cache invalidation for this behavior (default: false)
+    cache_invalidation: true
     response_headers_policy_name: "cors-public"
     viewer_protocol_policy: redirect-to-https
     compress: true
