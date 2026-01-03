@@ -47,6 +47,8 @@ module "cloudfront" {
   }
 }
 
+# Production tip: Protect resources with IAM tag-based policies (see README)
+
 # Outputs
 output "distribution_ids" {
   description = "CloudFront distribution IDs"

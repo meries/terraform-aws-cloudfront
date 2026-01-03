@@ -58,6 +58,9 @@ module "cloudfront" {
   }
 }
 
+# Production Protection: Use AWS IAM policies with tags to prevent accidental deletion
+# Example: Deny cloudfront:Delete* and s3:DeleteBucket where ResourceTag/Environment = "production"
+
 output "distribution_ids" {
   description = "CloudFront distribution IDs"
   value       = module.cloudfront.distribution_ids
