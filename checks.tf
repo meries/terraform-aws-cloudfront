@@ -829,3 +829,21 @@ check "origin_group_status_codes" {
     error_message = "Valid failover status codes: 403, 404, 500, 502, 503, 504"
   }
 }
+
+# Validation: Cache Invalidation must be boolean
+check "cache_invalidation_type" {
+  assert {
+    condition = alltrue(flatten([
+      for dist_name, dist_config in local.distributions : concat(
+        # Default behavior
+        [can(tobool(try(dist_config.default_behavior.cache_invalidation, false)))],
+        # Ordered behaviors
+        [
+          for behavior in try(dist_config.behaviors, []) :
+          can(tobool(try(behavior.cache_invalidation, false)))
+        ]
+      )
+    ]))
+    error_message = "cache_invalidation must be a boolean (true or false)"
+  }
+}

@@ -10,6 +10,7 @@ Terraform module for managing multiple CloudFront distributions using YAML confi
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.27 |
+| <a name="requirement_aws_cli"></a> [aws-cli](#requirement\_aws\_cli) | >= 2.0 (required for cache invalidation feature) |
 
 ## Providers
 
@@ -214,6 +215,32 @@ See [docs/ORIGIN_GROUPS.md](docs/ORIGIN_GROUPS.md) for complete documentation in
 | **Cost** | Very cheap | More expensive |
 
 See [docs/LAMBDA_EDGE.md](docs/LAMBDA_EDGE.md) for details.
+
+## Cache Invalidation
+
+Automatically invalidate CloudFront cache when deploying changes:
+
+```yaml
+default_behavior:
+  target_origin_id: s3-origin
+  cache_policy_name: general
+  cache_invalidation: true  # Invalidates /* on every apply (default: false)
+
+behaviors:
+  - path_pattern: "/api/*"
+    cache_invalidation: true  # Invalidates /api/* on every apply
+    function_associations:
+      - event_type: viewer-request
+        function_name: api-auth
+
+  - path_pattern: "/assets/*"
+    cache_invalidation: false  # No invalidation (versioned files)
+```
+
+**Behavior:**
+- `cache_invalidation: true` triggers invalidation on every `terraform apply`
+- Invalidates `/*` for default behavior or specific `path_pattern` for ordered behaviors
+- First 1000 invalidations per month are free
 
 ## CloudFront Access Logs
 
