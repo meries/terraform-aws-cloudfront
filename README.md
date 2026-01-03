@@ -31,10 +31,14 @@ terraform/
 │   ├── cloudfront-functions.yaml
 │   └── src/
 │       └── url-rewrite.js
-└── key-value-stores/
-    ├── stores.yaml
-    └── data/
-        └── feature-flags.json
+├── key-value-stores/
+│   ├── stores.yaml
+│   └── data/
+│       └── feature-flags.json
+└── trusted-key-groups/
+    ├── trusted-key-groups.yaml
+    └── keys/
+        └── public-key.pem
 ```
 
 ## Quick Start
