@@ -118,6 +118,7 @@ terraform apply
 - **Security headers** with strict CSP
 - **Custom origin request policy** for API caching
 - **Lifecycle policies** on logs
+- **Resource protection** strategies to prevent accidental deletion
 
 ## Notes
 
@@ -125,3 +126,4 @@ terraform apply
 - Update S3 bucket names to match your infrastructure
 - For production, ensure WAF Web ACL is created separately
 - SNS topic for alerts must exist before enabling monitoring
+- **Production:** Use IAM tag-based policies to prevent accidental deletion (see main README)

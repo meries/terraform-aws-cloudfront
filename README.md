@@ -267,6 +267,19 @@ Benefits: Reduces origin load, protects against traffic spikes, lowers data tran
 
 See [docs/AWS_MANAGED_POLICIES.md](docs/AWS_MANAGED_POLICIES.md) for complete list.
 
+## Production Best Practices
+
+**Protect resources from deletion:** Use AWS IAM tag-based policies. All resources inherit `common_tags`:
+
+```json
+{
+  "Effect": "Deny",
+  "Action": ["cloudfront:Delete*", "s3:DeleteBucket"],
+  "Resource": "*",
+  "Condition": { "StringEquals": { "aws:ResourceTag/Environment": "production" } }
+}
+```
+
 ## Documentation
 
 - [docs/BEHAVIORS.md](docs/BEHAVIORS.md) - Cache behaviors automatic sorting
