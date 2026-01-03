@@ -3,6 +3,9 @@
 
 enabled: true
 comment: "HA Website with automatic S3 failover"
+price_class: PriceClass_100
+http_version: http2and3
+ipv6_enabled: true
 
 # Origins: Primary and Secondary S3 buckets
 origins:
@@ -32,14 +35,6 @@ default_behavior:
   allowed_methods: [ GET, HEAD, OPTIONS ]
   cached_methods:  [ GET, HEAD ]
 
-# Price Class
-price_class: PriceClass_100
-
-# HTTP Versions
-http_version: http2and3
-
-# IPv6
-ipv6_enabled: true
 
 # Geo Restrictions (optional - disabled by default)
 geo_restriction:
