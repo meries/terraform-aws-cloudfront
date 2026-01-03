@@ -1,6 +1,6 @@
 enabled: true
-comment: "Website"
-price_class: "PriceClass_100"
+comment: Website
+price_class: PriceClass_100
 default_root_object: "index.html"
 ipv6_enabled: true
 
@@ -27,8 +27,8 @@ behavior_sorting: auto
 # Default behavior applies to all requests that don't match ordered behaviors
 default_behavior:
   target_origin_id: s3-website
-  cache_policy_name: "website-cache"
-  response_headers_policy_name: "security-headers"
+  cache_policy_name: website-cache
+  response_headers_policy_name: security-headers
 
 # Ordered behaviors - specific path patterns with custom caching rules
 # These take precedence over default_behavior for matching requests
@@ -36,17 +36,17 @@ behaviors:
   # API endpoints - minimal caching, forward auth headers
   - path_pattern: "/api/*"
     target_origin_id: s3-website
-    cache_policy_name: "api-cache"
+    cache_policy_name: api-cache
     viewer_protocol_policy: https-only
     allowed_methods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
 
   # Static assets - aggressive caching
   - path_pattern: "/assets/*"
     target_origin_id: s3-website
-    cache_policy_name: "website-cache"
+    cache_policy_name: website-cache
     # Enable cache invalidation for this behavior (default: false)
     cache_invalidation: true
-    response_headers_policy_name: "cors-public"
+    response_headers_policy_name: cors-public
     viewer_protocol_policy: redirect-to-https
     compress: true
 
@@ -57,7 +57,7 @@ custom_error_responses:
 
 # CloudFront access logs configuration
 logging:
-  bucket: "my-cloudfront-logs.s3.amazonaws.com"
+  bucket: my-cloudfront-logs.s3.amazonaws.com
   prefix: "cloudfront/website/"
   include_cookies: false
 

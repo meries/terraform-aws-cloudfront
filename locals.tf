@@ -124,6 +124,41 @@ locals {
     if contains(local.used_kvs_names, kvs_name)
   }
 
+  # Load Trusted Key Groups (all available from YAML file)
+  all_trusted_key_groups = fileexists("${var.trusted_key_groups_path}/trusted-key-groups.yaml") ? yamldecode(file("${var.trusted_key_groups_path}/trusted-key-groups.yaml")) : {}
+
+  # Collect all trusted key group names used in distributions
+  used_trusted_key_group_names = toset(flatten([
+    for dist_name, dist_config in local.distributions : concat(
+      # Default behavior trusted key groups
+      try(dist_config.default_behavior.trusted_key_group_name, null) != null ? [dist_config.default_behavior.trusted_key_group_name] : [],
+      # Ordered behaviors trusted key groups
+      [
+        for behavior in try(dist_config.behaviors, []) :
+        behavior.trusted_key_group_name
+        if try(behavior.trusted_key_group_name, null) != null
+      ]
+    )
+  ]))
+
+  # Filter to only create used trusted key groups
+  trusted_key_groups = {
+    for kg_name, kg_config in local.all_trusted_key_groups :
+    kg_name => kg_config
+    if contains(local.used_trusted_key_group_names, kg_name)
+  }
+
+  # Flatten public keys from used trusted key groups
+  # Creates a map with composite keys: "keygroup__keyname" => key_config
+  public_keys = merge([
+    for kg_name, kg_config in local.trusted_key_groups : {
+      for key in try(kg_config.public_keys, []) :
+      "${kg_name}__${key.name}" => merge(key, {
+        key_group_name = kg_name
+      })
+    }
+  ]...)
+
   # Default tags
   default_tags = var.enable_default_tags ? {
     ManagedBy     = "Terraform"

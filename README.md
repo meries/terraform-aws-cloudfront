@@ -31,10 +31,14 @@ terraform/
 │   ├── cloudfront-functions.yaml
 │   └── src/
 │       └── url-rewrite.js
-└── key-value-stores/
-    ├── stores.yaml
-    └── data/
-        └── feature-flags.json
+├── key-value-stores/
+│   ├── stores.yaml
+│   └── data/
+│       └── feature-flags.json
+└── trusted-key-groups/
+    ├── trusted-key-groups.yaml
+    └── keys/
+        └── public-key.pem
 ```
 
 ## Quick Start
@@ -51,10 +55,12 @@ terraform/
 | [aws_cloudfront_cache_policy.policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_cache_policy) | resource |
 | [aws_cloudfront_distribution.dist](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution) | resource |
 | [aws_cloudfront_function.function](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_function) | resource |
+| [aws_cloudfront_key_group.group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_key_group) | resource |
 | [aws_cloudfront_key_value_store.kvs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_key_value_store) | resource |
 | [aws_cloudfront_monitoring_subscription.metrics](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_monitoring_subscription) | resource |
 | [aws_cloudfront_origin_access_control.oac](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_origin_access_control) | resource |
 | [aws_cloudfront_origin_request_policy.policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_origin_request_policy) | resource |
+| [aws_cloudfront_public_key.key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_public_key) | resource |
 | [aws_cloudfront_response_headers_policy.policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_response_headers_policy) | resource |
 | [aws_cloudfrontkeyvaluestore_key.items](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfrontkeyvaluestore_key) | resource |
 | [aws_cloudwatch_dashboard.cloudfront](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_dashboard) | resource |
@@ -88,6 +94,7 @@ terraform/
 | <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Prefix string to prepend to all resource names. Useful for environment segregation (e.g., 'prod-', 'staging-') or multi-tenant deployments | `string` | `""` | no |
 | <a name="input_naming_suffix"></a> [naming\_suffix](#input\_naming\_suffix) | Suffix string to append to all resource names. Useful for regional identification (e.g., '-us-east-1') or versioning (e.g., '-v2') | `string` | `""` | no |
 | <a name="input_policies_path"></a> [policies\_path](#input\_policies\_path) | Path to the directory containing CloudFront policy YAML files (cache policies, origin request policies, response headers policies) | `string` | `"./policies"` | no |
+| <a name="input_trusted_key_groups_path"></a> [trusted\_key\_groups\_path](#input\_trusted\_key\_groups\_path) | Path to the directory containing Trusted Key Groups YAML files for signed URLs and signed cookies (private content access control) | `string` | `"./trusted-key-groups"` | no |
 
 ## Outputs
 
@@ -103,6 +110,8 @@ terraform/
 | <a name="output_key_value_store_arns"></a> [key\_value\_store\_arns](#output\_key\_value\_store\_arns) | Map of Key Value Store names to ARNs |
 | <a name="output_key_value_store_ids"></a> [key\_value\_store\_ids](#output\_key\_value\_store\_ids) | Map of Key Value Store names to IDs |
 | <a name="output_oac_ids"></a> [oac\_ids](#output\_oac\_ids) | Map of Origin Access Control IDs |
+| <a name="output_public_key_ids"></a> [public\_key\_ids](#output\_public\_key\_ids) | Map of Public Key names to IDs (composite key: keygroup\_\_keyname) |
+| <a name="output_trusted_key_group_ids"></a> [trusted\_key\_group\_ids](#output\_trusted\_key\_group\_ids) | Map of Trusted Key Group names to IDs |
 <!-- END_TF_DOCS -->
 
 
@@ -242,6 +251,44 @@ behaviors:
 - `cache_invalidation: true` triggers invalidation on every `terraform apply`
 - Invalidates `/*` for default behavior or specific `path_pattern` for ordered behaviors
 - First 1000 invalidations per month are free
+
+## Trusted Key Groups (Signed URLs & Cookies)
+
+Restrict access to private content using signed URLs or signed cookies:
+
+**1. Define key groups in `trusted-key-groups/trusted-key-groups.yaml`:**
+
+```yaml
+video-streaming:
+  comment: "Keys for premium video content"
+  public_keys:
+    - name: "production-key-2024"
+      comment: "Production signing key"
+      encoded_key_file: "keys/prod-key.pem"  # Path relative to trusted-key-groups/
+
+    - name: "production-key-2025"
+      comment: "Rotation key for 2025"
+      encoded_key: |
+        -----BEGIN PUBLIC KEY-----
+        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
+        -----END PUBLIC KEY-----
+```
+
+**2. Reference in distribution behaviors:**
+
+```yaml
+behaviors:
+  - path_pattern: "/premium/*"
+    target_origin_id: s3-premium
+    trusted_key_group_name: "video-streaming"  # Module-managed key group
+```
+
+**How it works:**
+- Your app generates signed URLs/cookies using the **private key**
+- CloudFront verifies signatures using the **public key** from the key group
+- Invalid signatures are rejected with 403 Forbidden
+
+See `examples/signed-urls/` for complete setup.
 
 ## CloudFront Access Logs
 

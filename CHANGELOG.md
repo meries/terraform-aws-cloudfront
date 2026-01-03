@@ -5,7 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.2] - Coming Soon
+## [1.0.3] - 2026-01-03
+
+### Added
+- **Trusted Key Groups support** for CloudFront signed URLs and signed cookies
+  - Enable private content access control with public/private key cryptography
+  - Configure key groups and public keys via YAML (`trusted-key-groups/trusted-key-groups.yaml`)
+  - Support both inline public keys and file-based public keys
+  - Lazy loading: only creates key groups that are referenced in distributions
+  - Reference key groups by name in behaviors: `trusted_key_group_name: video-streaming`
+  - Complete example in `examples/signed-urls/` with testing script
+  - New variable: `trusted_key_groups_path` (default: `./trusted-key-groups`)
+  - New outputs: `trusted_key_group_ids` and `public_key_ids`
+  - 3 new validation checks ensuring key group configuration integrity
+  - Complete documentation in README.md and example README
+
+- **Automatic cache invalidation** for CloudFront distributions
+  - Simple boolean flag per behavior: `cache_invalidation: true`
+  - Invalidates on every `terraform apply` when enabled
+  - Default behavior invalidates `/*`, ordered behaviors invalidate their `path_pattern`
+  - Uses AWS CLI `create-invalidation` command via `null_resource`
+  - Requires AWS CLI >= 2.0
+  - No complex change detection needed - intentionally simple for reliability
+
+- **Resource protection documentation**
+  - how to protect resources from accidental deletion using IAM permissions
+
+### Changed
+- **File rename**: `validations.tf` → `checks.tf`
+  - Better reflects Terraform 1.12+ native check blocks
+  - All validation logic remains identical
+  - No functional changes
+
+
+---
+## [1.0.2] - 2025-12-29
 
 ### Removed
 - **BREAKING: Removed obsolete variables** `create_route53_records` and `route53_zones`
@@ -15,7 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Migration: Remove these variables from module calls and use `create_dns_records` in distribution YAML files instead
 
 
-
+---
 ## [1.0.1] - 2025-12-28
 
 ### Added
@@ -47,6 +81,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Examples now include `providers` block for correct `us-east-1` alias configuration
 - Cleaner example structure without unnecessary empty directories
 
+
+---
 ## [1.0.0] - 2025-12-24
 
 ### Added
@@ -100,5 +136,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Multiple certificate configurations
 - IPv6 support toggle
 
-[1.0.1]: https://github.com/meries/terraform-aws-cloudfront/releases/tag/v1.0.1
-[1.0.0]: https://github.com/meries/terraform-aws-cloudfront/releases/tag/v1.0.0
+
+[1.0.3]: https://github.com/meries/terraform-aws-cloudfront/releases/tag/1.0.3
+[1.0.2]: https://github.com/meries/terraform-aws-cloudfront/releases/tag/1.0.2
+[1.0.1]: https://github.com/meries/terraform-aws-cloudfront/releases/tag/1.0.1
+[1.0.0]: https://github.com/meries/terraform-aws-cloudfront/releases/tag/1.0.0

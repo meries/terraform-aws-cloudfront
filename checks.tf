@@ -847,3 +847,55 @@ check "cache_invalidation_type" {
     error_message = "cache_invalidation must be a boolean (true or false)"
   }
 }
+
+# ============================================================================
+#  TRUSTED KEY GROUPS VALIDATIONS
+# ============================================================================
+
+# Validation: Public keys have required fields (name and encoded_key or encoded_key_file)
+check "public_keys_required_fields" {
+  assert {
+    condition = alltrue(flatten([
+      for kg_name, kg_config in local.all_trusted_key_groups : [
+        for key in try(kg_config.public_keys, []) :
+        try(key.name, null) != null &&
+        (try(key.encoded_key, null) != null || try(key.encoded_key_file, null) != null)
+      ]
+    ]))
+    error_message = "All public keys must have 'name' and either 'encoded_key' or 'encoded_key_file' fields"
+  }
+}
+
+# Validation: Trusted key groups have at least one public key
+check "trusted_key_groups_has_keys" {
+  assert {
+    condition = alltrue([
+      for kg_name, kg_config in local.all_trusted_key_groups :
+      length(try(kg_config.public_keys, [])) > 0
+    ])
+    error_message = "Trusted key groups must have at least one public key"
+  }
+}
+
+# Validation: Trusted key group names referenced in distributions exist
+check "trusted_key_group_references" {
+  assert {
+    condition = alltrue(flatten([
+      for dist_name, dist_config in local.distributions : concat(
+        # Default behavior
+        try(dist_config.default_behavior.trusted_key_group_name, null) != null ?
+        [contains(keys(local.all_trusted_key_groups), dist_config.default_behavior.trusted_key_group_name)] : [true],
+        # Ordered behaviors
+        [
+          for behavior in try(dist_config.behaviors, []) :
+          try(behavior.trusted_key_group_name, null) != null ?
+          contains(keys(local.all_trusted_key_groups), behavior.trusted_key_group_name) : true
+        ]
+      )
+    ]))
+    error_message = <<-EOF
+      Behavior references a trusted_key_group_name that doesn't exist in trusted-key-groups.yaml
+      Check your distribution YAML files and trusted-key-groups/trusted-key-groups.yaml file.
+    EOF
+  }
+}

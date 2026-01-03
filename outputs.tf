@@ -75,3 +75,17 @@ output "key_value_store_arns" {
     for k, v in aws_cloudfront_key_value_store.kvs : k => v.arn
   }
 }
+
+output "trusted_key_group_ids" {
+  description = "Map of Trusted Key Group names to IDs"
+  value = {
+    for k, v in aws_cloudfront_key_group.group : k => v.id
+  }
+}
+
+output "public_key_ids" {
+  description = "Map of Public Key names to IDs (composite key: keygroup__keyname)"
+  value = {
+    for k, v in aws_cloudfront_public_key.key : k => v.id
+  }
+}

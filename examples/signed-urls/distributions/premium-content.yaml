@@ -1,0 +1,41 @@
+enabled: true
+comment: Premium content distribution with signed URLs
+price_class: PriceClass_100
+
+# Update with your domain and certificate ARN
+aliases:
+  - www.example.com
+
+certificate:
+  acm_certificate_arn: "arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012"
+  minimum_protocol_version: TLSv1.2_2021
+
+origins:
+  - id: s3-premium
+    domain_name: my-premium-bucket.s3.eu-west-1.amazonaws.com
+    type: s3
+
+  - id: s3-public
+    domain_name: my-public-bucket.s3.eu-west-1.amazonaws.com
+    type: s3
+
+# Public content (no signing required)
+default_behavior:
+  target_origin_id: s3-public
+  viewer_protocol_policy: redirect-to-https
+  cache_policy_name: public-content
+
+behaviors:
+  # Premium content - requires signed URLs
+  - path_pattern: "/premium/*"
+    target_origin_id: s3-premium
+    viewer_protocol_policy: redirect-to-https
+    cache_policy_name: premium-content
+    trusted_key_group_name: video-streaming  # References key group from trusted-key-groups.yaml
+
+  # API access - different key group
+  - path_pattern: "/api/*"
+    target_origin_id: s3-premium
+    viewer_protocol_policy: https-only
+    cache_policy_name: api-cache
+    trusted_key_group_name: api-access

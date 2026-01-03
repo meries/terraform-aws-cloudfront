@@ -1,0 +1,39 @@
+video-streaming:
+  comment: "Keys for premium video content signing"
+  public_keys:
+    - name: "production-key-2024"
+      comment: "Production signing key for 2024"
+      encoded_key_file: "keys/example-public-key.pem"
+
+    - name: "production-key-2025"
+      comment: "Rotation key for 2025 (add before rotating)"
+      encoded_key: |
+        -----BEGIN PUBLIC KEY-----
+        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwJKfGC8vLF+8mGPZDxQJ
+        XYZ1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnop
+        qrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefgh
+        ijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890
+        abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ123
+        4567890abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUV
+        WXYZ1234567890abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNO
+        PQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGH
+        IJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz
+        -----END PUBLIC KEY-----
+
+api-access:
+  comment: "Keys for API authentication"
+  public_keys:
+    - name: "api-key-2024"
+      comment: "API access key"
+      encoded_key: |
+        -----BEGIN PUBLIC KEY-----
+        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyXYZ9876543210ZYXWVU
+        TSRQPONMLKJIHGFEDCBA0987654321zyxwvutsrqponmlkjihgfedcba0987654321
+        ZYXWVUTSRQPONMLKJIHGFEDCBA0987654321zyxwvutsrqponmlkjihgfedcba098
+        7654321ZYXWVUTSRQPONMLKJIHGFEDCBA0987654321zyxwvutsrqponmlkjihgfe
+        dcba0987654321ZYXWVUTSRQPONMLKJIHGFEDCBA0987654321zyxwvutsrqponml
+        kjihgfedcba0987654321ZYXWVUTSRQPONMLKJIHGFEDCBA0987654321zyxwvuts
+        rqponmlkjihgfedcba0987654321ZYXWVUTSRQPONMLKJIHGFEDCBA0987654321z
+        yxwvutsrqponmlkjihgfedcba0987654321ZYXWVUTSRQPONMLKJIHGFEDCBA0987
+        654321zyxwvutsrqponmlkjihgfedcba
+        -----END PUBLIC KEY-----

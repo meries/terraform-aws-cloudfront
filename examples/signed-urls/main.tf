@@ -19,35 +19,20 @@ provider "aws" {
 }
 
 module "cloudfront" {
-  source  = "meries/cloudfront/aws"
+  source = "meries/cloudfront/aws"
   version = "1.0.3"
 
   providers = {
     aws.us_east_1 = aws.us_east_1
   }
 
-  # Default: Path to your YAML configurations (can be overridden if needed)
-  # distributions_path    = "${path.module}/distributions"
-  # policies_path         = "${path.module}/policies"
-  # functions_path        = "${path.module}/functions"
-  # key_value_stores_path = "${path.module}/key-value-stores"
-
-  # Optional: Resource naming
-  naming_prefix = ""
-  naming_suffix = ""
-
-  # Optional: Automation features
-  create_log_buckets     = false
-  enable_monitoring      = false
-
   # Optional: Tags
   common_tags = {
     Environment = "production"
     ManagedBy   = "Terraform"
+    Project     = "Signed-URLs-Example"
   }
 }
-
-# Production tip: Protect resources with IAM tag-based policies (see README)
 
 # Outputs
 output "distribution_ids" {
@@ -58,4 +43,9 @@ output "distribution_ids" {
 output "distribution_domain_names" {
   description = "CloudFront domain names"
   value       = module.cloudfront.distribution_domain_names
+}
+
+output "trusted_key_group_ids" {
+  description = "Trusted Key Group IDs for signing URLs/cookies"
+  value       = module.cloudfront.trusted_key_group_ids
 }

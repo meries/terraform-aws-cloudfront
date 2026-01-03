@@ -64,13 +64,14 @@ provider "aws" {
 
 module "cloudfront" {
   source  = "meries/cloudfront/aws"
-  version = "1.0.1"
+  version = "1.0.3"
 
   # Default: Path to your YAML configurations (can be overridden if needed)
-  # distributions_path    = "${path.module}/distributions"
-  # policies_path         = "${path.module}/policies"
-  # functions_path        = "${path.module}/functions"
-  # key_value_stores_path = "${path.module}/key-value-stores"
+  # distributions_path      = "${path.module}/distributions"
+  # policies_path           = "${path.module}/policies"
+  # functions_path          = "${path.module}/functions"
+  # key_value_stores_path   = "${path.module}/key-value-stores"
+  # trusted_key_groups_path = "${path.module}/trusted-key-groups"
 
   # Optional: Resource naming
   naming_prefix = ""
