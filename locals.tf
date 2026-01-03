@@ -264,6 +264,25 @@ locals {
     try(data.aws_route53_zone.zones[item.zone_name].zone_id, null) != null
   }
 
+  # Cache invalidation paths per distribution
+  invalidation_paths = {
+    for dist_name, dist in local.distributions :
+    dist_name => distinct(concat(
+      # Default behavior
+      try(dist.default_behavior.cache_invalidation, false) ? ["/*"] : [],
+      # Ordered behaviors
+      [
+        for behavior in try(dist.behaviors, []) :
+        behavior.path_pattern
+        if try(behavior.cache_invalidation, false)
+      ]
+    ))
+    if length(concat(
+      try(dist.default_behavior.cache_invalidation, false) ? ["/*"] : [],
+      [for b in try(dist.behaviors, []) : b.path_pattern if try(b.cache_invalidation, false)]
+    )) > 0
+  }
+
   # Used by validation.tf for checks
   valid_price_classes                    = ["PriceClass_All", "PriceClass_200", "PriceClass_100"]
   valid_viewer_protocol_policies         = ["allow-all", "https-only", "redirect-to-https"]
