@@ -38,7 +38,6 @@ module "cloudfront" {
 
   # Development settings (minimal features for cost optimization)
   create_log_buckets     = false # No logs in dev
-  enable_monitoring      = false # No monitoring in dev
 
   # Development tags
   common_tags = {

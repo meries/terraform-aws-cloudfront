@@ -38,7 +38,13 @@ module "cloudfront" {
 
   # Production settings (full feature set)
   create_log_buckets     = true
-  enable_monitoring      = true
+  monitoring_defaults = {
+    enabled                       = false
+    error_rate_threshold          = 5
+    error_rate_evaluation_periods = 2
+    sns_topic_arn                 = null
+    create_dashboard              = false
+  }
 
   # Production tags
   common_tags = {

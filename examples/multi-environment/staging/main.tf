@@ -38,7 +38,6 @@ module "cloudfront" {
 
   # Staging settings (more features than dev, less than prod)
   create_log_buckets     = false # Use existing bucket or no logs
-  enable_monitoring      = false # No monitoring in staging
 
   # Staging tags
   common_tags = {
