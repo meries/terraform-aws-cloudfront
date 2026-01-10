@@ -1,3 +1,4 @@
+---
 url-rewrite:
   comment: "SPA URL rewriting for staging environment"
   runtime: "cloudfront-js-2.0"

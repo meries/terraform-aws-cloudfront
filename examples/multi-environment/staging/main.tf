@@ -20,7 +20,7 @@ provider "aws" {
 
 module "cloudfront" {
   source  = "meries/cloudfront/aws"
-  version = "1.0.3"
+  version = "1.0.4"
 
   providers = {
     aws.us_east_1 = aws.us_east_1
@@ -38,7 +38,6 @@ module "cloudfront" {
 
   # Staging settings (more features than dev, less than prod)
   create_log_buckets     = false # Use existing bucket or no logs
-  enable_monitoring      = false # No monitoring in staging
 
   # Staging tags
   common_tags = {

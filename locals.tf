@@ -318,6 +318,52 @@ locals {
     )) > 0
   }
 
+  # Monitoring configuration per distribution
+  # Merges distribution-specific monitoring config with module defaults
+  monitoring_config = {
+    for dist_name, dist_config in local.distributions :
+    dist_name => {
+      enabled = try(
+        dist_config.monitoring.enabled,
+        var.monitoring_defaults.enabled,
+        false
+      )
+      enable_additional_metrics = try(
+        dist_config.monitoring.enable_additional_metrics,
+        dist_config.enable_additional_metrics, # Backward compatibility
+        var.monitoring_defaults.enable_additional_metrics,
+        false
+      )
+      error_rate_threshold = try(
+        dist_config.monitoring.error_rate_threshold,
+        var.monitoring_defaults.error_rate_threshold,
+        5
+      )
+      error_rate_evaluation_periods = try(
+        dist_config.monitoring.error_rate_evaluation_periods,
+        var.monitoring_defaults.error_rate_evaluation_periods,
+        2
+      )
+      sns_topic_arn = try(
+        dist_config.monitoring.sns_topic_arn,
+        var.monitoring_defaults.sns_topic_arn,
+        null
+      )
+      create_dashboard = try(
+        dist_config.monitoring.create_dashboard,
+        var.monitoring_defaults.create_dashboard,
+        false
+      )
+    }
+  }
+
+  # Distributions with monitoring enabled
+  monitored_distributions = {
+    for dist_name, config in local.monitoring_config :
+    dist_name => config
+    if config.enabled
+  }
+
   # Used by validation.tf for checks
   valid_price_classes                    = ["PriceClass_All", "PriceClass_200", "PriceClass_100"]
   valid_viewer_protocol_policies         = ["allow-all", "https-only", "redirect-to-https"]

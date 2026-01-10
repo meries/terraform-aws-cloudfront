@@ -1,0 +1,45 @@
+---
+enabled: true
+price_class: PriceClass_100
+http_version: http2and3
+
+aliases:
+  - api.example.com
+
+create_dns_records: false
+
+# Monitoring configuration for this distribution
+# Overrides the module's monitoring_defaults
+monitoring:
+  enabled: true
+  enable_additional_metrics: true
+  error_rate_threshold: 3
+  error_rate_evaluation_periods: 2
+  sns_topic_arn: arn:aws:sns:us-east-1:123456789012:cloudfront-critical-alerts
+  create_dashboard: true
+
+origins:
+  - id: api-backend
+    type: custom
+    domain_name: api.example.com
+    custom_origin_config:
+      http_port: 80
+      https_port: 443
+      protocol_policy: https-only
+      ssl_protocols:
+        - TLSv1.2
+      keepalive_timeout: 60
+      read_timeout: 30
+
+default_behavior:
+  target_origin_id: api-backend
+  viewer_protocol_policy: https-only
+  cache_policy_name: api-optimized
+  allowed_methods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+  cached_methods: [GET, HEAD, OPTIONS]
+  compress: true
+
+certificate:
+  acm_certificate_arn: arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012
+  ssl_support_method: sni-only
+  minimum_protocol_version: TLSv1.2_2021

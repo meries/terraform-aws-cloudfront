@@ -1,3 +1,4 @@
+---
 public-content:
   comment: "Caching for public content"
   min_ttl: 0
