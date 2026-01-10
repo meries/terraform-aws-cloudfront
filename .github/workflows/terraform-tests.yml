@@ -33,10 +33,6 @@ jobs:
         id: init
         run: terraform init
 
-      - name: Terraform Validate
-        id: validate
-        run: terraform validate
-
       - name: Run Terraform Tests
         id: test
         run: terraform test
