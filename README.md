@@ -24,7 +24,8 @@ Terraform module for managing multiple CloudFront distributions using YAML confi
 terraform/
 ├── main.tf
 ├── distributions/
-│   └── website.yaml
+│   ├── production-api.yaml       # Filename = distribution name
+│   └── staging-web.yaml
 ├── policies/
 │   └── cache-policies.yaml
 ├── functions/
@@ -46,6 +47,9 @@ terraform/
 > For a complete getting started guide with full configuration examples, see the [examples/](examples/) including:
 >- [default](examples/default/) - Quick start with common patterns
 >- [multi-environment](examples/multi-environment/) - Production-ready multi-environment setup
+>- [origin-groups](examples/origin-groups/) - High-availability with automatic failover
+>- [signed-urls](examples/signed-urls/) - Private content with Trusted Key Groups
+>- [monitoring-config](examples/monitoring-config/) - CloudWatch alarms and dashboards
 
 <!-- BEGIN_TF_DOCS -->
 ## Resources
@@ -123,7 +127,7 @@ Key configuration options for `distributions/*.yaml`:
 - `enabled` - Enable/disable distribution
 - `aliases` - Custom domain names (CNAME)
 - `create_dns_records` - Auto-create Route53 records (default: true)
-- `enable_additional_metrics` - CloudWatch metrics (costs $0.01/1000 requests)
+- `monitoring` - CloudWatch alarms, dashboards, and additional metrics (see Monitoring section)
 - `behavior_sorting` - `auto` or `manual` (default: auto)
 - `web_acl_id` - AWS WAF Web ACL ARN (WAFv2, us-east-1)
 - `origins` - Origin configurations (S3, custom)
@@ -178,11 +182,52 @@ Key configuration options for `distributions/*.yaml`:
 - Origin Shield
 - Access logs to S3
 
-## Origin Groups (Automatic Failover)
+## Origins
 
-CloudFront Origin Groups provide automatic failover between primary and secondary origins when specific HTTP error codes are returned. This enables high-availability configurations without external monitoring.
+### S3 Origins
 
-### Basic YAML Configuration
+S3 origins support Origin Access Control (OAC) for secure, private access to S3 buckets.
+
+```yaml
+origins:
+  - id: my-s3-origin
+    type: s3
+    domain_name: my-bucket.s3.eu-west-1.amazonaws.com
+    s3_origin_config:
+      origin_access_control: true
+```
+
+### Custom Origins
+
+Custom origins (HTTP/HTTPS servers, ALB, API Gateway, etc.) support advanced configuration.
+
+```yaml
+origins:
+  - id: my-api-origin
+    type: custom
+    domain_name: api.example.com
+    connection_attempts: 3                 # 1-3 attempts (default: 3)
+    connection_timeout: 10                 # 1-10 seconds (default: 10)
+    custom_origin_config:
+      http_port: 80
+      https_port: 443
+      protocol_policy: https-only          # https-only | http-only | match-viewer
+      ssl_protocols: [TLSv1.2]             # TLSv1, TLSv1.1, TLSv1.2, SSLv3
+      keepalive_timeout: 60                # 1-180 seconds (default: 5)
+      read_timeout: 30                     # 1-180 seconds (default: 30)
+```
+
+**Key parameters:**
+- `connection_attempts`: Number of times CloudFront attempts to connect to the origin (1-3)
+- `connection_timeout`: Timeout for each connection attempt in seconds (1-10)
+- `protocol_policy`: How CloudFront connects to your origin
+- `ssl_protocols`: SSL/TLS protocols for HTTPS connections
+- `keepalive_timeout`: Connection reuse timeout (improves performance)
+- `read_timeout`: Response timeout from origin
+
+### Origin Groups (Automatic Failover)
+
+Origin Groups provide automatic failover between primary and secondary origins when specific HTTP error codes are returned.
 
 ```yaml
 origins:
@@ -205,14 +250,13 @@ default_behavior:
   target_origin_id: ha-s3-group
 ```
 
-### Key Points
+**Key points:**
+- Exactly 2 members required (primary and secondary)
+- Valid status codes: 403, 404, 500, 502, 503, 504
+- Automatic failover in < 1 second
+- Behaviors can reference origins or origin groups
 
-- **Exactly 2 members required** - Primary and secondary origins only
-- **Valid status codes** - 403, 404, 500, 502, 503, 504
-- **Automatic failover** - Happens in < 1 second when primary returns configured status code
-- **Behaviors can reference origin groups** - Use `target_origin_id` to reference either an origin or origin group
-
-See [docs/ORIGIN_GROUPS.md](docs/ORIGIN_GROUPS.md) for complete documentation including multi-region examples, best practices, and troubleshooting.
+See [docs/ORIGIN_GROUPS.md](docs/ORIGIN_GROUPS.md) for complete documentation including multi-region examples and best practices.
 
 ## CloudFront Functions vs Lambda@Edge
 
@@ -250,7 +294,36 @@ behaviors:
 **Behavior:**
 - `cache_invalidation: true` triggers invalidation on every `terraform apply`
 - Invalidates `/*` for default behavior or specific `path_pattern` for ordered behaviors
-- First 1000 invalidations per month are free
+- First 1000 invalidations per month are free (Please be mindful of the cost).
+
+## Monitoring (CloudWatch Alarms & Dashboards)
+
+Configure CloudWatch monitoring per distribution with alarms and dashboards:
+
+```yaml
+monitoring:
+  enabled: true                          # Enable/disable monitoring for this distribution
+  enable_additional_metrics: true        # Enable real-time CloudFront metrics
+  error_rate_threshold: 3                # Error rate % threshold for alarms
+  error_rate_evaluation_periods: 2       # Number of periods before alarm triggers
+  sns_topic_arn: arn:aws:sns:us-east-1:123456789012:alerts  # SNS topic for notifications
+  create_dashboard: true                 # Create CloudWatch dashboard
+```
+
+**What gets created when `enabled: true`:**
+- CloudWatch alarms for 4xx and 5xx error rates
+- CloudWatch dashboard (when `create_dashboard: true`)
+- SNS notifications when alarms trigger (if `sns_topic_arn` provided)
+- Additional real-time metrics (when `enable_additional_metrics: true`)
+
+**Module-level defaults** can be set via `monitoring_defaults` variable to apply to all distributions (overridable per distribution).
+
+**Costs:**
+- Alarms: First 10 free, then $0.10/alarm/month
+- Dashboards: First 3 free, then $3.00/dashboard/month
+- Additional metrics: $0.01 per 1,000 requests
+
+See `examples/monitoring-config/` for complete setup.
 
 ## Trusted Key Groups (Signed URLs & Cookies)
 
