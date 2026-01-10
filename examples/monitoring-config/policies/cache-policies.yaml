@@ -1,3 +1,4 @@
+---
 api-optimized:
   comment: Optimized caching for API with query string forwarding
   default_ttl: 300

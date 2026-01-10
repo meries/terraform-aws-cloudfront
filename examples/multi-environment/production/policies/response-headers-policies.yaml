@@ -1,3 +1,4 @@
+---
 security-headers-strict:
   comment: "Strict security headers for production environment"
 

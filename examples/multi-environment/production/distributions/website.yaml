@@ -1,3 +1,4 @@
+---
 enabled: true
 comment: "Production Website Distribution"
 price_class: "PriceClass_All" # Global coverage
