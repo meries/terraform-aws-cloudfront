@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] - 2026-01-10
+
+### Changed
+- **BREAKING: Per-distribution monitoring configuration**
+  - Removed global variables: `enable_monitoring` and `monitoring_config`
+  - Monitoring now configured per distribution in YAML: `monitoring.enabled`, `monitoring.error_rate_threshold`, etc.
+  - New variable `monitoring_defaults` for default values applied to all distributions
+  - CloudWatch alarms and dashboards created only for distributions with `monitoring.enabled: true`
+  - Each distribution can have its own monitoring thresholds, SNS topics, and dashboard
+  - Dashboards now created per distribution instead of one global dashboard
+  - `enable_additional_metrics` moved into `monitoring` block for better organization (backward compatible)
+  - Migration: Move monitoring settings from module variables to distribution YAML files
+- **Custom origin configuration structure**
+  - Custom origin parameters now read from `custom_origin_config` block in YAML (recommended)
+  - Backward compatible: still supports root-level parameters (`http_port`, `protocol_policy`, etc.)
+  - Consistent with `s3_origin_config` pattern
+  - Updated all examples to use new `custom_origin_config` structure
+
+### Added
+- 3 new validation checks for monitoring configuration (SNS ARN format, threshold range, evaluation periods)
+- New example: `examples/monitoring-config/` demonstrating per-distribution monitoring setup
+
+### Fixed
+- CloudWatch monitoring resources now correctly use `us-east-1` provider (CloudFront metrics are region-specific)
+
+---
 ## [1.0.3] - 2026-01-03
 
 ### Added
