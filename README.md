@@ -12,6 +12,24 @@ Terraform module for managing multiple CloudFront distributions using YAML confi
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.27 |
 | <a name="requirement_aws_cli"></a> [aws-cli](#requirement\_aws\_cli) | >= 2.0 (required for cache invalidation feature) |
 
+> [!IMPORTANT]
+> This module requires an AWS provider alias `aws.us_east_1` for CloudWatch resources. CloudFront metrics are only available in the `us-east-1` region globally.
+>
+> ```hcl
+> provider "aws" {
+>   alias  = "us_east_1"
+>   region = "us-east-1"
+> }
+>
+> module "cloudfront" {
+>   source = "meries/cloudfront/aws"
+>
+>   providers = {
+>     aws.us_east_1 = aws.us_east_1
+>   }
+> }
+> ```
+
 ## Providers
 
 | Name | Version |
@@ -43,13 +61,13 @@ terraform/
 ```
 
 ## Quick Start
-
-> For a complete getting started guide with full configuration examples, see the [examples/](examples/) including:
->- [default](examples/default/) - Quick start with common patterns
->- [multi-environment](examples/multi-environment/) - Production-ready multi-environment setup
->- [origin-groups](examples/origin-groups/) - High-availability with automatic failover
->- [signed-urls](examples/signed-urls/) - Private content with Trusted Key Groups
->- [monitoring-config](examples/monitoring-config/) - CloudWatch alarms and dashboards
+> [!TIP]
+For a complete getting started guide with full configuration examples, see the [examples/](examples/) including:
+- [default](examples/default/) - Quick start with common patterns
+- [multi-environment](examples/multi-environment/) - Production-ready multi-environment setup
+- [origin-groups](examples/origin-groups/) - High-availability with automatic failover
+- [signed-urls](examples/signed-urls/) - Private content with Trusted Key Groups
+- [monitoring-config](examples/monitoring-config/) - CloudWatch alarms and dashboards
 
 <!-- BEGIN_TF_DOCS -->
 ## Resources
@@ -187,6 +205,9 @@ Key configuration options for `distributions/*.yaml`:
 
 S3 origins support Origin Access Control (OAC) for secure, private access to S3 buckets.
 
+> [!TIP]
+> The module automatically creates and manages Origin Access Control (OAC) when `origin_access_control: true` is specified. No manual S3 bucket policy configuration needed.
+
 ```yaml
 origins:
   - id: my-s3-origin
@@ -290,10 +311,12 @@ behaviors:
     cache_invalidation: false  # No invalidation (versioned files)
 ```
 
+> [!CAUTION]
+> `cache_invalidation: true` triggers invalidation on **every** `terraform apply`, regardless of changes. First 1000 invalidations per month are free, then $0.005 per path.
+
 **Behavior:**
-- `cache_invalidation: true` triggers invalidation on every `terraform apply`
 - Invalidates `/*` for default behavior or specific `path_pattern` for ordered behaviors
-- First 1000 invalidations per month are free (Please be mindful of the cost).
+- Uses AWS CLI to create invalidations (requires `aws-cli >= 2.0`)
 
 ## Monitoring (CloudWatch Alarms & Dashboards)
 
@@ -326,7 +349,10 @@ See `examples/monitoring-config/` for complete setup.
 
 ## Trusted Key Groups (Signed URLs & Cookies)
 
-Restrict access to private content using signed URLs or signed cookies:
+Restrict access to private content using signed URLs or signed cookies.
+
+> [!NOTE]
+> The module manages public keys only. Your application must generate signed URLs/cookies using the corresponding private keys (not managed by this module).
 
 **1. Define key groups in `trusted-key-groups/trusted-key-groups.yaml`:**
 
@@ -384,10 +410,8 @@ Set `create_log_buckets = true` to auto-create S3 buckets with:
 web_acl_id: "arn:aws:wafv2:us-east-1:123456789012:global/webacl/my-waf/xxx"
 ```
 
-Requirements:
-- WAFv2 only (not classic WAF)
-- Must be in `us-east-1` region
-- Scope must be `CLOUDFRONT`
+> [!WARNING]
+> Only WAFv2 Web ACLs in `us-east-1` region with `CLOUDFRONT` scope are supported. Classic WAF is not compatible with this module.
 
 ### Origin Shield
 
@@ -416,7 +440,8 @@ See [docs/AWS_MANAGED_POLICIES.md](docs/AWS_MANAGED_POLICIES.md) for complete li
 
 ## Production Best Practices
 
-**Protect resources from deletion:** Use AWS IAM tag-based policies. All resources inherit `common_tags`:
+> [!TIP]
+> Protect production resources from accidental deletion using AWS IAM tag-based policies. All resources created by this module inherit `common_tags`.
 
 ```json
 {
