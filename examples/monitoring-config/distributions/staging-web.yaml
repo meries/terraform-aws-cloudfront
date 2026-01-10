@@ -1,0 +1,35 @@
+enabled: true
+price_class: PriceClass_100
+http_version: http2
+
+aliases:
+  - staging.example.com
+
+create_dns_records: false
+
+# Monitoring disabled for staging environment
+# Uses monitoring_defaults from module (disabled by default)
+monitoring:
+  enabled: false
+
+origins:
+  - id: s3-staging-web
+    type: s3
+    domain_name: my-staging-website-bucket.s3.eu-west-1.amazonaws.com
+    s3_origin_config:
+      origin_access_control: true
+
+default_behavior:
+  target_origin_id: s3-staging-web
+  viewer_protocol_policy: redirect-to-https
+  cache_policy_name: web-optimized
+  allowed_methods: [GET, HEAD]
+  cached_methods: [GET, HEAD]
+  compress: true
+
+certificate:
+  acm_certificate_arn: arn:aws:acm:us-east-1:123456789012:certificate/87654321-4321-4321-4321-210987654321
+  ssl_support_method: sni-only
+  minimum_protocol_version: TLSv1.2_2021
+
+
