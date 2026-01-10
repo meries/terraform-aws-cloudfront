@@ -19,7 +19,6 @@
 ## 📋 Secondary Priorities
 
 ### Infrastructure Automation
-- [ ] Cache invalidation automation (on deployment)
 - [ ] Import script (convert existing distributions to YAML)
 
 ### Testing
