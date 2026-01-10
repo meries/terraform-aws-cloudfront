@@ -79,7 +79,6 @@ module "cloudfront" {
 
   # Optional: Automation features
   create_log_buckets = false
-  enable_monitoring  = false
 
   # Optional: Tags
   common_tags = {
