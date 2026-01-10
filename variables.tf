@@ -34,15 +34,11 @@ variable "create_log_buckets" {
   default     = false
 }
 
-variable "enable_monitoring" {
-  description = "Enable CloudWatch monitoring with alarms for error rates (4xx, 5xx) and optional dashboards for CloudFront distribution metrics"
-  type        = bool
-  default     = false
-}
-
-variable "monitoring_config" {
-  description = "CloudWatch monitoring configuration with error_rate_threshold (%), error_rate_evaluation_periods, sns_topic_arn for notifications, and create_dashboard flag"
+variable "monitoring_defaults" {
+  description = "Default monitoring configuration applied to all distributions unless overridden in distribution YAML. Controls CloudWatch alarms, dashboards, and additional metrics per distribution"
   type = object({
+    enabled                       = optional(bool, false)
+    enable_additional_metrics     = optional(bool, false)
     error_rate_threshold          = optional(number, 5)
     error_rate_evaluation_periods = optional(number, 2)
     sns_topic_arn                 = optional(string)

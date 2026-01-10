@@ -34,12 +34,12 @@ resource "aws_cloudfront_distribution" "dist" {
       dynamic "custom_origin_config" {
         for_each = try(origin.value.type, "s3") == "custom" ? [1] : []
         content {
-          http_port                = try(origin.value.http_port, 80)
-          https_port               = try(origin.value.https_port, 443)
-          origin_protocol_policy   = try(origin.value.protocol_policy, "https-only")
-          origin_ssl_protocols     = try(origin.value.ssl_protocols, ["TLSv1.2"])
-          origin_keepalive_timeout = try(origin.value.keepalive_timeout, 5)
-          origin_read_timeout      = try(origin.value.read_timeout, 30)
+          http_port                = try(origin.value.custom_origin_config.http_port, origin.value.http_port, 80)
+          https_port               = try(origin.value.custom_origin_config.https_port, origin.value.https_port, 443)
+          origin_protocol_policy   = try(origin.value.custom_origin_config.protocol_policy, origin.value.protocol_policy, "https-only")
+          origin_ssl_protocols     = try(origin.value.custom_origin_config.ssl_protocols, origin.value.ssl_protocols, ["TLSv1.2"])
+          origin_keepalive_timeout = try(origin.value.custom_origin_config.keepalive_timeout, origin.value.keepalive_timeout, 5)
+          origin_read_timeout      = try(origin.value.custom_origin_config.read_timeout, origin.value.read_timeout, 30)
           # response_completion_timeout is not yet supported in Terraform AWS provider (even in v6.27)
           # See: https://github.com/hashicorp/terraform-provider-aws/issues/44116
           # Default: null (no timeout enforced if not specified)

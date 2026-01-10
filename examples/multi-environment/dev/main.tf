@@ -20,7 +20,7 @@ provider "aws" {
 
 module "cloudfront" {
   source  = "meries/cloudfront/aws"
-  version = "1.0.3"
+  version = "1.0.4"
 
   providers = {
     aws.us_east_1 = aws.us_east_1
@@ -37,8 +37,7 @@ module "cloudfront" {
   naming_suffix = ""
 
   # Development settings (minimal features for cost optimization)
-  create_log_buckets     = false # No logs in dev
-  enable_monitoring      = false # No monitoring in dev
+  create_log_buckets = false # No logs in dev
 
   # Development tags
   common_tags = {

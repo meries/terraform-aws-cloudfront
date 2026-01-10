@@ -6,8 +6,8 @@
 resource "aws_cloudfront_public_key" "key" {
   for_each = local.public_keys
 
-  name        = "${var.naming_prefix}${each.value.name}${var.naming_suffix}"
-  comment     = try(each.value.comment, "Public key ${each.value.name}")
+  name    = "${var.naming_prefix}${each.value.name}${var.naming_suffix}"
+  comment = try(each.value.comment, "Public key ${each.value.name}")
   encoded_key = try(
     file("${var.trusted_key_groups_path}/${each.value.encoded_key_file}"),
     each.value.encoded_key

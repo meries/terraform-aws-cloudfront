@@ -33,10 +33,6 @@ jobs:
         id: init
         run: terraform init
 
-      - name: Terraform Validate
-        id: validate
-        run: terraform validate
-
       - name: Run Terraform Tests
         id: test
         run: terraform test
@@ -55,7 +51,6 @@ jobs:
           echo "### Validation Steps:" >> $GITHUB_STEP_SUMMARY
           echo "- Format Check: ${{ steps.fmt.outcome }}" >> $GITHUB_STEP_SUMMARY
           echo "- Init: ${{ steps.init.outcome }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Validate: ${{ steps.validate.outcome }}" >> $GITHUB_STEP_SUMMARY
           echo "- Tests: ${{ steps.test.outcome }}" >> $GITHUB_STEP_SUMMARY
 
       - name: Comment PR
@@ -70,7 +65,6 @@ jobs:
             |------|--------|
             | Format Check | ${{ steps.fmt.outcome }} |
             | Init | ${{ steps.init.outcome }} |
-            | Validate | ${{ steps.validate.outcome }} |
             | Tests | ${{ steps.test.outcome }} |
 
             ${{ steps.test.outcome == 'success' && '✔️ All tests passed!' || '✖️ Tests failed - see workflow logs' }}

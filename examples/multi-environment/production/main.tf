@@ -20,7 +20,7 @@ provider "aws" {
 
 module "cloudfront" {
   source  = "meries/cloudfront/aws"
-  version = "1.0.3"
+  version = "1.0.4"
 
   providers = {
     aws.us_east_1 = aws.us_east_1
@@ -37,8 +37,14 @@ module "cloudfront" {
   naming_suffix = ""
 
   # Production settings (full feature set)
-  create_log_buckets     = true
-  enable_monitoring      = true
+  create_log_buckets = true
+  monitoring_defaults = {
+    enabled                       = false
+    error_rate_threshold          = 5
+    error_rate_evaluation_periods = 2
+    sns_topic_arn                 = null
+    create_dashboard              = false
+  }
 
   # Production tags
   common_tags = {
