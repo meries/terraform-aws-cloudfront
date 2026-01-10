@@ -29,10 +29,10 @@ origins:
     custom_origin_config:
       http_port: 80
       https_port: 443
-      origin_protocol_policy: https-only
-      origin_ssl_protocols: [TLSv1.2]
-      origin_read_timeout: 60
-      origin_keepalive_timeout: 5
+      protocol_policy: https-only
+      ssl_protocols: [TLSv1.2]
+      read_timeout: 60
+      keepalive_timeout: 5
 
 default_behavior:
   target_origin_id: prod-s3-origin
