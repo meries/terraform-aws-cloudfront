@@ -899,3 +899,52 @@ check "trusted_key_group_references" {
     EOF
   }
 }
+
+# ============================================================================
+#  MONITORING VALIDATIONS
+# ============================================================================
+
+# Validation: SNS Topic ARN format
+check "monitoring_sns_topic_arn" {
+  assert {
+    condition = alltrue([
+      for dist_name, config in local.monitoring_config :
+      config.sns_topic_arn == null || can(regex("^arn:aws:sns:[a-z0-9-]+:[0-9]{12}:[a-zA-Z0-9_-]+$", config.sns_topic_arn))
+    ])
+    error_message = <<-EOM
+      Invalid SNS topic ARN format in monitoring configuration.
+      Must be a valid ARN like: arn:aws:sns:region:account-id:topic-name
+      Check your distribution YAML monitoring.sns_topic_arn values.
+    EOM
+  }
+}
+
+# Validation: Error rate threshold range
+check "monitoring_error_rate_threshold" {
+  assert {
+    condition = alltrue([
+      for dist_name, config in local.monitoring_config :
+      config.error_rate_threshold >= 0 && config.error_rate_threshold <= 100
+    ])
+    error_message = <<-EOM
+      Invalid error_rate_threshold in monitoring configuration.
+      Must be between 0 and 100 (percentage).
+      Check your distribution YAML monitoring.error_rate_threshold values.
+    EOM
+  }
+}
+
+# Validation: Evaluation periods range
+check "monitoring_evaluation_periods" {
+  assert {
+    condition = alltrue([
+      for dist_name, config in local.monitoring_config :
+      config.error_rate_evaluation_periods >= 1 && config.error_rate_evaluation_periods <= 10
+    ])
+    error_message = <<-EOM
+      Invalid error_rate_evaluation_periods in monitoring configuration.
+      Must be between 1 and 10.
+      Check your distribution YAML monitoring.error_rate_evaluation_periods values.
+    EOM
+  }
+}
