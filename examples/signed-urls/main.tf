@@ -19,7 +19,7 @@ provider "aws" {
 }
 
 module "cloudfront" {
-  source = "meries/cloudfront/aws"
+  source  = "meries/cloudfront/aws"
   version = "1.0.4"
 
   providers = {

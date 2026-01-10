@@ -37,7 +37,7 @@ module "cloudfront" {
   naming_suffix = ""
 
   # Production settings (full feature set)
-  create_log_buckets     = true
+  create_log_buckets = true
   monitoring_defaults = {
     enabled                       = false
     error_rate_threshold          = 5

@@ -37,7 +37,7 @@ module "cloudfront" {
   naming_suffix = ""
 
   # Development settings (minimal features for cost optimization)
-  create_log_buckets     = false # No logs in dev
+  create_log_buckets = false # No logs in dev
 
   # Development tags
   common_tags = {

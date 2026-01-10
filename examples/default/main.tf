@@ -37,7 +37,7 @@ module "cloudfront" {
   naming_suffix = ""
 
   # Optional: Automation features
-  create_log_buckets     = false
+  create_log_buckets = false
 
   # Optional: Tags
   common_tags = {
