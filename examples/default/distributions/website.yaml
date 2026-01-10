@@ -2,6 +2,7 @@
 enabled: true
 comment: Website
 price_class: PriceClass_100
+http_version: http2
 default_root_object: "index.html"
 ipv6_enabled: true
 
@@ -13,8 +14,17 @@ aliases:
 # Default: true (Route53 zones are automatically detected based on alias domain names)
 create_dns_records: false
 
+# Optional: Specify Route53 hosted zone ID if automatic detection doesn't work
+# route53_zone_id: Z1234567890ABC
+
+# Optional: AWS WAF Web ACL ARN (must be WAFv2 and in us-east-1 region)
+# web_acl_id: arn:aws:wafv2:us-east-1:123456789012:global/webacl/example/a1234567-b890-c123-d456-e78901234567
+
 certificate:
   acm_certificate_arn: "arn:aws:acm:us-east-1:123:certificate/xxx"
+
+# Origin groups for automatic failover (see examples/multi-environment for usage)
+origin_groups: []
 
 origins:
   - id: s3-website
@@ -62,5 +72,10 @@ logging:
   prefix: "cloudfront/website/"
   include_cookies: false
 
-# Enable additional CloudWatch metrics for detailed monitoring
-enable_additional_metrics: true
+# Geographic restrictions (example - uncomment if needed)
+# geo_restriction:
+#   restriction_type: whitelist
+#   locations: [US, CA, GB, FR, DE]
+
+# Monitoring configuration (see examples/monitoring-config for detailed usage)
+monitoring: []

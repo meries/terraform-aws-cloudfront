@@ -123,17 +123,28 @@ For a complete getting started guide with full configuration examples, see the [
 
 Key configuration options for `distributions/*.yaml`:
 
-- `enabled` - Enable/disable distribution
-- `aliases` - Custom domain names (CNAME)
-- `create_dns_records` - Auto-create Route53 records (default: true)
-- `monitoring` - CloudWatch alarms, dashboards, and additional metrics (see Monitoring section)
-- `behavior_sorting` - `auto` or `manual` (default: auto)
-- `web_acl_id` - AWS WAF Web ACL ARN (WAFv2, us-east-1)
-- `origins` - Origin configurations (S3, custom)
-- `default_behavior` - Default cache behavior
-- `behaviors` - Ordered cache behaviors
-- `logging` - CloudFront access logs
-- `certificate` - ACM certificate ARN
+- `enabled` (bool) - Enable/disable distribution
+- `default_root_object` (string) - Default root object (e.g., index.html)
+- `comment` (string) - Distribution description
+- `price_class` (string) - Price class (PriceClass_All, PriceClass_200, PriceClass_100)
+- `http_version` (string) - HTTP version (http1.1, http2, http2and3, http3)
+- `ipv6_enabled` (bool) - Enable IPv6 (default: true)
+- `aliases` (list) - Custom domain names (CNAME)
+- `create_dns_records` (bool) - Auto-create Route53 records (default: true)
+- `route53_zone_id` (string) - Route53 hosted zone ID for DNS records
+- `certificate` (object) - ACM certificate configuration
+- `web_acl_id` (string) - AWS WAF Web ACL ARN (WAFv2, us-east-1)
+- `origins` (list) - Origin configurations (S3, custom)
+- `origin_groups` (list) - Origin groups for automatic failover
+- `default_behavior` (object) - Default cache behavior
+- `behaviors` (list) - Ordered cache behaviors
+- `behavior_sorting` (string) - `auto` or `manual` (default: auto)
+- `custom_error_responses` (list) - Custom error pages configuration
+- `geo_restriction` (object) - Geographic restrictions
+- `logging` (object) - CloudFront access logs
+- `monitoring` (object) - CloudWatch alarms, dashboards, and additional metrics (see Monitoring section)
+
+**Complete examples with all options:** [examples/default/](examples/default/)
 
 ### Policy Types
 
