@@ -176,29 +176,6 @@ Key configuration options for `distributions/*.yaml`:
 
 **Complete examples with all options:** [examples/default/](examples/default/)
 
-## Features
-
-**Core:**
-- Multiple distributions & environments
-- YAML-based configuration
-- Automatic cache behavior sorting
-
-**Automation:**
-- Auto OAC for S3 origins
-- Auto S3 log bucket policies
-- Auto Route53 DNS records
-
-**Functions:**
-- CloudFront Functions (managed)
-- Lambda@Edge (attach only)
-- Key Value Stores support
-
-**Monitoring & Security:**
-- CloudWatch alarms & dashboards
-- AWS WAF integration
-- Origin Shield
-- Access logs to S3
-
 ## Origins
 
 ### S3 Origins
