@@ -200,20 +200,20 @@ locals {
       for behavior in try(dist_config.behaviors, []) : merge(
         behavior,
         {
-          dist_name                     = dist_name
-          path_pattern                  = behavior.path_pattern
-          target_origin_id              = behavior.target_origin_id
-          allowed_methods               = try(behavior.allowed_methods, ["GET", "HEAD"])
-          cached_methods                = try(behavior.cached_methods, ["GET", "HEAD"])
-          compress                      = try(behavior.compress, false)
-          viewer_protocol_policy        = try(behavior.viewer_protocol_policy, "redirect-to-https")
-          cache_policy_name             = try(behavior.cache_policy_name, null)
-          origin_request_policy_name    = try(behavior.origin_request_policy_name, null)
-          response_headers_policy_name  = try(behavior.response_headers_policy_name, null)
-          function_associations         = try(behavior.function_associations, [])
-          lambda_function_associations  = try(behavior.lambda_function_associations, [])
-          trusted_key_group_name        = try(behavior.trusted_key_group_name, null)
-          trusted_key_group_ids         = try(behavior.trusted_key_group_ids, null)
+          dist_name                    = dist_name
+          path_pattern                 = behavior.path_pattern
+          target_origin_id             = behavior.target_origin_id
+          allowed_methods              = try(behavior.allowed_methods, ["GET", "HEAD"])
+          cached_methods               = try(behavior.cached_methods, ["GET", "HEAD"])
+          compress                     = try(behavior.compress, false)
+          viewer_protocol_policy       = try(behavior.viewer_protocol_policy, "redirect-to-https")
+          cache_policy_name            = try(behavior.cache_policy_name, null)
+          origin_request_policy_name   = try(behavior.origin_request_policy_name, null)
+          response_headers_policy_name = try(behavior.response_headers_policy_name, null)
+          function_associations        = try(behavior.function_associations, [])
+          lambda_function_associations = try(behavior.lambda_function_associations, [])
+          trusted_key_group_name       = try(behavior.trusted_key_group_name, null)
+          trusted_key_group_ids        = try(behavior.trusted_key_group_ids, null)
         }
       )
     ]
@@ -261,20 +261,20 @@ locals {
     dist_name => [
       for behavior in local.all_behaviors :
       merge(behavior, {
-        dist_name                     = dist_name
-        path_pattern                  = behavior.path_pattern
-        target_origin_id              = behavior.target_origin_id
-        allowed_methods               = behavior.allowed_methods
-        cached_methods                = behavior.cached_methods
-        compress                      = behavior.compress
-        viewer_protocol_policy        = behavior.viewer_protocol_policy
-        cache_policy_name             = behavior.cache_policy_name
-        origin_request_policy_name    = behavior.origin_request_policy_name
-        response_headers_policy_name  = behavior.response_headers_policy_name
-        function_associations         = behavior.function_associations
-        lambda_function_associations  = behavior.lambda_function_associations
-        trusted_key_group_name        = behavior.trusted_key_group_name
-        trusted_key_group_ids         = behavior.trusted_key_group_ids
+        dist_name                    = dist_name
+        path_pattern                 = behavior.path_pattern
+        target_origin_id             = behavior.target_origin_id
+        allowed_methods              = behavior.allowed_methods
+        cached_methods               = behavior.cached_methods
+        compress                     = behavior.compress
+        viewer_protocol_policy       = behavior.viewer_protocol_policy
+        cache_policy_name            = behavior.cache_policy_name
+        origin_request_policy_name   = behavior.origin_request_policy_name
+        response_headers_policy_name = behavior.response_headers_policy_name
+        function_associations        = behavior.function_associations
+        lambda_function_associations = behavior.lambda_function_associations
+        trusted_key_group_name       = behavior.trusted_key_group_name
+        trusted_key_group_ids        = behavior.trusted_key_group_ids
       })
       if behavior.dist_name == dist_name
     ]
