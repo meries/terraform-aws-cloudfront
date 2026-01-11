@@ -22,6 +22,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Backward compatible: still supports root-level parameters (`http_port`, `protocol_policy`, etc.)
   - Consistent with `s3_origin_config` pattern
   - Updated all examples to use new `custom_origin_config` structure
+- **Policy lifecycle management**
+  - Added `lifecycle { create_before_destroy = true }` to all policy resources (cache, origin request, response headers)
+  - Enables single-apply policy deletion instead of requiring two applies
+  - Prevents "policy still attached" errors when modifying policies
+- **Policy defaults improved**
+  - Cache policy now defaults to AWS Managed `Managed-CachingOptimized` instead of hardcoded ID
+  - Uses `data.aws_cloudfront_cache_policy` data source for cleaner implementation
+  - Origin request policy defaults to `null` (no policy) for optimal static asset delivery
+  - Response headers policy defaults to `null` (no policy)
 
 ### Added
 - 3 new validation checks for monitoring configuration (SNS ARN format, threshold range, evaluation periods)
@@ -29,6 +38,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - CloudWatch monitoring resources now correctly use `us-east-1` provider (CloudFront metrics are region-specific)
+- **Behavior sorting regression in manual mode**
+  - Fixed crash when `behavior_sorting: manual` and optional attributes (cache_policy_name, response_headers_policy_name, etc.) were commented in YAML
+  - Fixed duplicate behaviors appearing across all distributions in manual mode
+  - Added proper distribution name filtering in `manual_behaviors_by_dist`
+  - Simplified behavior flattening logic to only include essential attributes initially
+- **CORS configuration drift**
+  - Made `access_control_expose_headers` block dynamic in response headers policies
+  - Only created when `expose_headers` list is not empty
+  - Prevents Terraform drift on every apply
 
 ---
 ## [1.0.3] - 2026-01-03
