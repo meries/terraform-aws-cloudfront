@@ -195,14 +195,25 @@ locals {
     ]
   ])
 
-  # Flatten all behaviors from all distributions with their distribution name
   all_behaviors = flatten([
     for dist_name, dist_config in local.distributions : [
       for behavior in try(dist_config.behaviors, []) : merge(
         behavior,
         {
-          dist_name    = dist_name
-          path_pattern = behavior.path_pattern
+          dist_name                    = dist_name
+          path_pattern                 = behavior.path_pattern
+          target_origin_id             = behavior.target_origin_id
+          allowed_methods              = try(behavior.allowed_methods, ["GET", "HEAD"])
+          cached_methods               = try(behavior.cached_methods, ["GET", "HEAD"])
+          compress                     = try(behavior.compress, false)
+          viewer_protocol_policy       = try(behavior.viewer_protocol_policy, "redirect-to-https")
+          cache_policy_name            = try(behavior.cache_policy_name, null)
+          origin_request_policy_name   = try(behavior.origin_request_policy_name, null)
+          response_headers_policy_name = try(behavior.response_headers_policy_name, null)
+          function_associations        = try(behavior.function_associations, [])
+          lambda_function_associations = try(behavior.lambda_function_associations, [])
+          trusted_key_group_name       = try(behavior.trusted_key_group_name, null)
+          trusted_key_group_ids        = try(behavior.trusted_key_group_ids, null)
         }
       )
     ]
@@ -245,17 +256,30 @@ locals {
     ]
   }
 
-  # Manual mode: behaviors in the order defined in YAML
   manual_behaviors_by_dist = {
-    for dist_name, dist_config in local.distributions :
+    for dist_name in keys(local.distributions) :
     dist_name => [
-      for behavior in try(dist_config.behaviors, []) :
+      for behavior in local.all_behaviors :
       merge(behavior, {
-        dist_name    = dist_name
-        path_pattern = behavior.path_pattern
+        dist_name                    = dist_name
+        path_pattern                 = behavior.path_pattern
+        target_origin_id             = behavior.target_origin_id
+        allowed_methods              = behavior.allowed_methods
+        cached_methods               = behavior.cached_methods
+        compress                     = behavior.compress
+        viewer_protocol_policy       = behavior.viewer_protocol_policy
+        cache_policy_name            = behavior.cache_policy_name
+        origin_request_policy_name   = behavior.origin_request_policy_name
+        response_headers_policy_name = behavior.response_headers_policy_name
+        function_associations        = behavior.function_associations
+        lambda_function_associations = behavior.lambda_function_associations
+        trusted_key_group_name       = behavior.trusted_key_group_name
+        trusted_key_group_ids        = behavior.trusted_key_group_ids
       })
+      if behavior.dist_name == dist_name
     ]
   }
+
 
   # Final behaviors selection based on sorting mode (configured per distribution in YAML)
   # Default to "auto" if not specified
@@ -297,25 +321,6 @@ locals {
     })
     if try(local.distributions[item.dist_name].create_dns_records, true) &&
     try(data.aws_route53_zone.zones[item.zone_name].zone_id, null) != null
-  }
-
-  # Cache invalidation paths per distribution
-  invalidation_paths = {
-    for dist_name, dist in local.distributions :
-    dist_name => distinct(concat(
-      # Default behavior
-      try(dist.default_behavior.cache_invalidation, false) ? ["/*"] : [],
-      # Ordered behaviors
-      [
-        for behavior in try(dist.behaviors, []) :
-        behavior.path_pattern
-        if try(behavior.cache_invalidation, false)
-      ]
-    ))
-    if length(concat(
-      try(dist.default_behavior.cache_invalidation, false) ? ["/*"] : [],
-      [for b in try(dist.behaviors, []) : b.path_pattern if try(b.cache_invalidation, false)]
-    )) > 0
   }
 
   # Monitoring configuration per distribution
@@ -364,6 +369,14 @@ locals {
     if config.enabled
   }
 
+  # Cache invalidation paths per distribution
+  # Collects paths from distributions where cache_invalidation_paths is defined
+  invalidation_paths = {
+    for dist_name, dist_config in local.distributions :
+    dist_name => dist_config.cache_invalidation_paths
+    if try(dist_config.cache_invalidation_paths, null) != null && length(try(dist_config.cache_invalidation_paths, [])) > 0
+  }
+
   # Used by validation.tf for checks
   valid_price_classes                    = ["PriceClass_All", "PriceClass_200", "PriceClass_100"]
   valid_viewer_protocol_policies         = ["allow-all", "https-only", "redirect-to-https"]
@@ -382,5 +395,4 @@ locals {
   valid_frame_options                    = ["DENY", "SAMEORIGIN"]
   valid_referrer_policies                = ["no-referrer", "no-referrer-when-downgrade", "origin", "origin-when-cross-origin", "same-origin", "strict-origin", "strict-origin-when-cross-origin", "unsafe-url"]
   valid_cors_methods                     = ["GET", "HEAD", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]
-
 }

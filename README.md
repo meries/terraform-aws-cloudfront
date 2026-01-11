@@ -80,6 +80,7 @@ For a complete getting started guide with full configuration examples, see the [
 | [aws_s3_bucket_server_side_encryption_configuration.cloudfront_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
 | [aws_s3_bucket_versioning.cloudfront_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
 | [null_resource.cache_invalidation](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [aws_cloudfront_cache_policy.managed-caching-optimized](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudfront_cache_policy) | data source |
 | [aws_route53_zone.zones](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
 
 ## Inputs
@@ -143,6 +144,7 @@ Key configuration options for `distributions/*.yaml`:
 - `geo_restriction` (object) - Geographic restrictions
 - `logging` (object) - CloudFront access logs
 - `monitoring` (object) - CloudWatch alarms, dashboards, and additional metrics (see Monitoring section)
+- `cache_invalidation_paths` (list) - Paths to invalidate on every terraform apply
 
 **Complete examples with all options:** [examples/default/](examples/default/)
 
@@ -259,29 +261,40 @@ See [docs/LAMBDA_EDGE.md](docs/LAMBDA_EDGE.md) for details.
 
 ## Cache Invalidation
 
-Automatically invalidate CloudFront cache when deploying changes:
+Automatically invalidate CloudFront cache paths on every `terraform apply`:
 
 ```yaml
+# distributions/website.yaml
+enabled: true
+comment: Website
+
+origins:
+  - id: s3-website
+    type: s3
+    domain_name: my-bucket.s3.eu-west-1.amazonaws.com
+
 default_behavior:
-  target_origin_id: s3-origin
-  cache_policy_name: general
-  cache_invalidation: true  # Invalidates /* on every apply (default: false)
+  target_origin_id: s3-website
+  cache_policy_name: website-cache
 
-behaviors:
-  - path_pattern: "/api/*"
-    cache_invalidation: true  # Invalidates /api/* on every apply
-    function_associations:
-      - event_type: viewer-request
-        function_name: api-auth
-
-  - path_pattern: "/assets/*"
-    cache_invalidation: false  # No invalidation (versioned files)
+# Cache invalidation - specify paths to invalidate on every terraform apply
+cache_invalidation_paths: ["/index.html", "/api/*", "/assets/*"]
 ```
 
 **Behavior:**
-- `cache_invalidation: true` triggers invalidation on every `terraform apply`
-- Invalidates `/*` for default behavior or specific `path_pattern` for ordered behaviors
-- First 1000 invalidations per month are free (Please be mindful of the cost).
+- Invalidations are triggered on **every** `terraform apply` using `timestamp()` trigger
+- Uses AWS CLI `aws cloudfront create-invalidation` command (requires AWS CLI >= 2.0)
+- Each invalidation returns a unique Invalidation ID tracked in CloudFront console
+
+**CloudFront Invalidation Limits:**
+- First 1,000 invalidation paths per month are free
+- Beyond that, $0.005 per path
+- Wildcard paths (`/*`, `/api/*`) count as a single path
+
+**Best Practices:**
+- Use wildcard paths to minimize path count
+- Consider versioned assets (`/assets/v1.2.3/*`) to avoid invalidations
+- For high-frequency deployments, use versioned filenames instead of cache invalidation
 
 ## Monitoring (CloudWatch Alarms & Dashboards)
 
