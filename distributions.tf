@@ -86,7 +86,7 @@ resource "aws_cloudfront_distribution" "dist" {
     cache_policy_id = try(
       aws_cloudfront_cache_policy.policy[each.value.default_behavior.cache_policy_name].id,
       each.value.default_behavior.cache_policy_id,
-      null
+      data.aws_cloudfront_cache_policy.managed-caching-optimized.id
     )
 
     origin_request_policy_id = try(
@@ -137,28 +137,23 @@ resource "aws_cloudfront_distribution" "dist" {
     content {
       path_pattern           = ordered_cache_behavior.value.path_pattern
       target_origin_id       = ordered_cache_behavior.value.target_origin_id
-      viewer_protocol_policy = try(ordered_cache_behavior.value.viewer_protocol_policy, "redirect-to-https")
-      allowed_methods        = try(ordered_cache_behavior.value.allowed_methods, ["GET", "HEAD", "OPTIONS"])
-      cached_methods         = try(ordered_cache_behavior.value.cached_methods, ["GET", "HEAD"])
-      compress               = try(ordered_cache_behavior.value.compress, true)
+      viewer_protocol_policy = ordered_cache_behavior.value.viewer_protocol_policy
+      allowed_methods        = ordered_cache_behavior.value.allowed_methods
+      cached_methods         = ordered_cache_behavior.value.cached_methods
+      compress               = ordered_cache_behavior.value.compress
 
-      cache_policy_id = try(
-        aws_cloudfront_cache_policy.policy[ordered_cache_behavior.value.cache_policy_name].id,
-        ordered_cache_behavior.value.cache_policy_id,
-        null
-      )
+      # Cache Policy: use custom policy if specified, otherwise use AWS Managed-CachingDisabled
+      cache_policy_id = ordered_cache_behavior.value.cache_policy_name != null ? (
+        aws_cloudfront_cache_policy.policy[ordered_cache_behavior.value.cache_policy_name].id
+      ) : data.aws_cloudfront_cache_policy.managed-caching-optimized.id
 
-      origin_request_policy_id = try(
-        aws_cloudfront_origin_request_policy.policy[ordered_cache_behavior.value.origin_request_policy_name].id,
-        ordered_cache_behavior.value.origin_request_policy_id,
-        null
-      )
+      origin_request_policy_id = ordered_cache_behavior.value.origin_request_policy_name != null ? (
+        aws_cloudfront_origin_request_policy.policy[ordered_cache_behavior.value.origin_request_policy_name].id
+      ) : null
 
-      response_headers_policy_id = try(
-        aws_cloudfront_response_headers_policy.policy[ordered_cache_behavior.value.response_headers_policy_name].id,
-        ordered_cache_behavior.value.response_headers_policy_id,
-        null
-      )
+      response_headers_policy_id = ordered_cache_behavior.value.response_headers_policy_name != null ? (
+        aws_cloudfront_response_headers_policy.policy[ordered_cache_behavior.value.response_headers_policy_name].id
+      ) : null
 
       # Trusted Key Groups (Signed URLs/Cookies)
       trusted_key_groups = try(
