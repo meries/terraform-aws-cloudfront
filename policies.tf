@@ -8,6 +8,10 @@ resource "aws_cloudfront_cache_policy" "policy" {
   name    = "${var.naming_prefix}${each.key}${var.naming_suffix}"
   comment = try(each.value.comment, "Cache policy ${each.key}")
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
   default_ttl = try(each.value.default_ttl, 86400)
   max_ttl     = try(each.value.max_ttl, 31536000)
   min_ttl     = try(each.value.min_ttl, 0)
@@ -60,6 +64,10 @@ resource "aws_cloudfront_origin_request_policy" "policy" {
   name    = "${var.naming_prefix}${each.key}${var.naming_suffix}"
   comment = try(each.value.comment, "Origin request policy ${each.key}")
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
   cookies_config {
     cookie_behavior = try(each.value.cookies_behavior, "none")
 
@@ -103,6 +111,10 @@ resource "aws_cloudfront_response_headers_policy" "policy" {
   name    = "${var.naming_prefix}${each.key}${var.naming_suffix}"
   comment = try(each.value.comment, "Response headers policy ${each.key}")
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
   # CORS Configuration
   dynamic "cors_config" {
     for_each = try(each.value.cors_config, null) != null ? [1] : []
@@ -121,8 +133,11 @@ resource "aws_cloudfront_response_headers_policy" "policy" {
         items = try(each.value.cors_config.allow_origins, ["*"])
       }
 
-      access_control_expose_headers {
-        items = try(each.value.cors_config.expose_headers, [])
+      dynamic "access_control_expose_headers" {
+        for_each = length(try(each.value.cors_config.expose_headers, [])) > 0 ? [1] : []
+        content {
+          items = each.value.cors_config.expose_headers
+        }
       }
 
       access_control_max_age_sec = try(each.value.cors_config.max_age_sec, 600)

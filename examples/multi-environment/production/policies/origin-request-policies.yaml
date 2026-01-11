@@ -6,15 +6,7 @@ api-origin-request:
 
   headers_behavior: whitelist
   headers:
-    - Authorization
     - Accept
-    - Accept-Language
-    - Accept-Encoding
-    - Content-Type
-    - CloudFront-Viewer-Country
-    - CloudFront-Is-Desktop-Viewer
-    - CloudFront-Is-Mobile-Viewer
-    - CloudFront-Is-Tablet-Viewer
     - User-Agent
     - Referer
 
